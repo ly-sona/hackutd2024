@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { useState, useCallback, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import throttle from 'lodash.throttle'; // Optional: For throttling
+import Dashboard from './pages/Dashboard';
+import Analytics from './pages/Analytics';
+import Claims from './pages/Claims';
+import Sidebar from './components/Sidebar';
+import './App.css'; // Ensure this import is present
 
 function App() {
-  const [count, setCount] = useState(0)
+  // State to track cursor position as percentages relative to main-content
+  const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 }); // Default center
+  const mainContentRef = useRef(null);
+
+  // Handler for mouse movement with throttling (optional)
+  const handleMouseMove = useCallback(
+    throttle((e) => {
+      if (mainContentRef.current) {
+        const rect = mainContentRef.current.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setCursorPos({ x, y });
+      }
+    }, 50), // Throttle to once every 50ms
+    []
+  );
+
+  // Calculate radial gradient based on cursor position
+  const calculateGradient = () => {
+    const { x, y } = cursorPos;
+    // Define subtle light and dark forest green colors with transparency
+    const lightGreen = 'rgba(123, 156, 133, 0.5)'; // Subtle Medium Aquamarine with 50% opacity
+    const darkGreen = 'rgba(46, 66, 52, 0.8)';     // Forest Green with 80% opacity
+    return `radial-gradient(circle at ${x}% ${y}%, ${lightGreen} 0%, ${darkGreen} 100%)`;
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="app-container">
+        <Sidebar />
+        <div
+          className="main-content"
+          ref={mainContentRef}
+          onMouseMove={handleMouseMove}
+          style={{ background: calculateGradient() }}
+        >
+          <div className="content-overlay">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/claims" element={<Claims />} />
+              {/* Add more routes as needed */}
+            </Routes>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

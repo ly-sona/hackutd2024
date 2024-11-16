@@ -1,42 +1,79 @@
+/* src/App.css */
+
+/* Ensure that the root element takes up the full viewport */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent unwanted scrollbars */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Main content area */
+.main-content {
+  flex: 1; /* Take up the remaining space */
+  margin-left: 200px; /* Width of the sidebar */
+  padding: 20px;
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+  transition: background 0.5s ease; /* Smooth transition for background changes */
+  position: relative; /* To position overlay if needed */
+  background: radial-gradient(circle at 50% 50%, rgba(123, 156, 133, 0.5) 0%, rgba(46, 66, 52, 0.8) 60%); /* Initial gradient */
+}
+
+/* Overlay for content to enhance text readability */
+.content-overlay {
+  position: relative;
+  z-index: 1; /* Ensure content is above the overlay */
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark overlay */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Remove or adjust the existing .main-content::before overlay if using this method */
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none; /* Disable the previous overlay */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Text Styling for Readability */
+.main-content h1,
+.main-content p,
+.main-content div {
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 150px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .main-content {
+    margin-left: 150px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .sidebar {
+    width: 120px;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .main-content {
+    margin-left: 120px;
+  }
 }
