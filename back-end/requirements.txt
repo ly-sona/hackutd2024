@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+lightgbm
+shap
+sqlalchemy
+psycopg2-binary
+pydantic
