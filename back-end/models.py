@@ -1,6 +1,6 @@
 # models.py
 
-from sqlalchemy import Column, Integer, Float, Boolean, DateTime
+from sqlalchemy import Column, Integer, Float, Boolean, DateTime, String
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
@@ -18,3 +18,4 @@ class Claim(Base):
     fraud_score = Column(Float)
     anomaly_score = Column(Float, default=0.0)
     created_at = Column(DateTime, default=datetime.utcnow)
+    ipfs_hash = Column(String, nullable=True)  # New field to store IPFS hash
