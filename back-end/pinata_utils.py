@@ -1,4 +1,4 @@
-# pinata_utils.py
+# insurewise_backend/pinata_utils.py
 
 import requests
 import os

@@ -1,4 +1,4 @@
-# main.py
+# insurewise_backend/main.py
 
 from fastapi import FastAPI, HTTPException, Depends, File, UploadFile
 from sqlalchemy.orm import Session
@@ -7,6 +7,8 @@ import lightgbm as lgb
 import shap
 import joblib
 from typing import List
+import os
+from dotenv import load_dotenv
 
 from models import Base, Claim
 from database import engine, SessionLocal
@@ -14,9 +16,6 @@ from schemas import ClaimCreate, ClaimResponse
 
 from fastapi.middleware.cors import CORSMiddleware
 from pinata_utils import upload_file_to_pinata  # Import the utility function
-
-from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
