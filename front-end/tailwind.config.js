@@ -1,12 +1,14 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'base-gradient': 'linear-gradient(135deg, #1d2c2f 0%, #065f46 100%)',
+      },
+    },
   },
-  plugins: [
-    require('daisyui'),
-  ],
+  plugins: [require('daisyui')],
   daisyui: {
     themes: [
       {
