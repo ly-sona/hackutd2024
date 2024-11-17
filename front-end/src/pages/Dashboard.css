@@ -1,60 +1,82 @@
-/* src/pages/Dashboard.css */
-
 .dashboard-container {
   padding: 24px;
-  background: transparent;
   min-height: 100vh;
-  color: #ffffff;
 }
 
 .dashboard-container h1 {
   color: #ffffff;
   margin-bottom: 24px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-/* User Information Section */
-.user-info-section {
-  margin-bottom: 40px;
-  padding: 20px;
-  background-color: rgba(46, 66, 52, 0.8);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.user-info-section h2 {
-  color: #1abc9c;
-  margin-bottom: 16px;
-}
-
-.user-info p {
-  margin: 8px 0;
-  color: #ecf0f1;
-}
-
-/* Graphs Section */
-.graphs-section {
+.grid-container {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
 }
 
+.left-column,
+.right-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: #3a007d;
+  border-radius: 8px;
+  opacity: 0; /* For animation */
+  transform: translateY(50px); /* For animation */
+}
+
+.section h2 {
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.section p,
+.section li {
+  color: #cccccc;
+  margin: 8px 0;
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.graphs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .graph-card {
-  flex: 1 1 45%;
-  background-color: rgba(46, 66, 52, 0.8);
+  background-color: #3a007d;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0; /* For animation */
+  transform: translateY(50px); /* For animation */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .graph-card h3 {
-  color: #1abc9c;
+  color: #ffffff;
   margin-bottom: 16px;
+}
+
+/* Hover effect */
+.graph-card:hover {
+  transform: translateY(-10px);
+}
+
+.section:hover {
+  transform: translateY(-10px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .graph-card {
-    flex: 1 1 100%;
+  .grid-container {
+    flex-direction: column;
   }
 }
