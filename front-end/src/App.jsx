@@ -83,7 +83,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/CusInfo" element={<CusInfo />} />
               <Route path="/default" element={<Default />} />
-              <Route path="/apply-loan" render={(props) => <LoanRisk {...props.location.state} />} />
+              <Route path="/loan-risk" element={<LoanRisk />} /> {/* Add this line */}
+              {/* Alternatively, if you prefer /loan-risk as the path */}
+              {/* <Route path="/loan-risk" element={<LoanRisk />} /> */}
             </Routes>
           </div>
         </div>

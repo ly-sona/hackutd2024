@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './CusInfo.css';
 import Tooltip from '../components/Tooltip';
+import { useNavigate } from 'react-router-dom';
 
 const CusInfo = () => {
   // State variables for personal information
@@ -28,6 +29,8 @@ const CusInfo = () => {
   const [loanApproved, setLoanApproved] = useState('');
 
   const [showDefaultInfo, setShowDefaultInfo] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,6 +65,9 @@ const CusInfo = () => {
     } else {
       alert('Your information has been submitted!');
     }
+
+    // Pass customerData to the LoanRisk component via navigation state
+    navigate('/loan-risk', { state: { customerData } });
   };
 
   return (
@@ -128,7 +134,7 @@ const CusInfo = () => {
               <input
                 type="number"
                 value={dependents}
-                onChange={(e) => setDependents(e.target.value)}
+                onChange={(e) => setDependents(parseInt(e.target.value) || 0)}
                 min="0"
                 required
               />

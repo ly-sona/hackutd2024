@@ -49,7 +49,7 @@ function Sidebar({ isVisible }) {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/apply-loan" className="text-lg font-bold" end>
+              <NavLink to="/loan-risk" className="text-lg font-bold" end>
               Loan Approval Risk
               </NavLink>
             </li>
