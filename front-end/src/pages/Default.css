@@ -1,9 +1,9 @@
-/* src/pages/LoanHistory.css */
+/* src/pages/Default.css */
 
 .loan-history-container {
   padding: 24px;
-  background-color: #1a1a2e; /* Dark background */
-  color: #e0e0e0; /* Light text for contrast */
+  background-color: #1a1a2e;
+  color: #e0e0e0;
   border-radius: 10px;
   max-width: 1200px;
   margin: 20px auto;
@@ -11,7 +11,7 @@
 }
 
 .loan-history-container h1 {
-  color: #9b59b6; /* Pale purple for title */
+  color: #9b59b6;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 30px;
@@ -26,20 +26,24 @@
   margin-bottom: 30px;
 }
 
-.total-loan-amount {
+.total-loan-amount,
+.average-income {
   background: #2c2c54;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  width: 48%;
 }
 
-.total-loan-amount h2 {
+.total-loan-amount h2,
+.average-income h2 {
   color: #9b59b6;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
-.total-loan-amount p {
+.total-loan-amount p,
+.average-income p {
   font-size: 2rem;
   font-weight: bold;
   color: #e0e0e0;
@@ -57,37 +61,13 @@ button.analyze-btn {
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin: 30px auto;
 }
 
 button.analyze-btn:hover {
   background: #8e44ad;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-}
-
-/* Loading and Error Messages */
-.loading,
-.error {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-top: 50px;
-}
-
-.error {
-  color: #e74c3c;
-}
-
-/* Responsive and flexible layout */
-.flex-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.flex-layout > div {
-  flex: 1;
-  background: #121212;
-  border-radius: 10px;
-  padding: 20px;
 }
 
 /* Graph container */
@@ -96,7 +76,7 @@ button.analyze-btn:hover {
   justify-content: center;
   align-items: center;
   height: 350px;
-  background: linear-gradient(135deg, #2c2c54, #1a1a2e); /* Dark purple gradient */
+  background: linear-gradient(135deg, #2c2c54, #1a1a2e);
   border-radius: 10px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
@@ -126,7 +106,7 @@ button.analyze-btn:hover {
 }
 
 .history-table thead {
-  background-color: #9b59b6; /* Pale purple for table headers */
+  background-color: #9b59b6;
   color: #fff;
 }
 
@@ -139,11 +119,11 @@ button.analyze-btn:hover {
 }
 
 .history-table tr:nth-child(even) {
-  background-color: #1e1e30; /* Darker grey for zebra striping */
+  background-color: #1e1e30;
 }
 
 .history-table tr:hover {
-  background-color: #343450; /* Highlight on hover */
+  background-color: #343450;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -152,67 +132,16 @@ button.analyze-btn:hover {
   color: #e0e0e0;
 }
 
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(26, 26, 46, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .overview {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.modal-content {
-  background-color: #121212;
-  padding: 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 600px;
-  position: relative;
-}
-
-.modal-content h2 {
-  color: #9b59b6;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-}
-
-.modal-content p {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-}
-
-.close-modal-btn {
-  background: #9b59b6;
-  color: #fff;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-  float: right;
-}
-
-.close-modal-btn:hover {
-  background: #8e44ad;
-}
-
-/* Scrollbar Styling */
-.table-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background: #9b59b6;
-  border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: #8e44ad;
+  .total-loan-amount,
+  .average-income {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }

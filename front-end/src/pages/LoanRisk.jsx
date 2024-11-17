@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './ApplyLoan.css';
+import './LoanRisk.css';
 import { Bar } from 'react-chartjs-2';
 
-const ApplyLoan = () => {
+const LoanRisk = () => {
   // State for customer data
   const [customerData, setCustomerData] = useState({
     name: '',
@@ -202,4 +202,4 @@ const ApplyLoan = () => {
   );
 };
 
-export default ApplyLoan;
+export default LoanRisk;
