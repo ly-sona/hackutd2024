@@ -1,14 +1,31 @@
-# backend/app/main.py
-
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 from app.schemas import LoanApplicationCreate, LoanApplication, PredictionResponse
 from app.models import Base, LoanApplication as LoanApplicationModel
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker
 from app.utils import Model
 import os
 from dotenv import load_dotenv
 import logging
+from typing import List  # Import List from typing
+
+# Initialize FastAPI
+app = FastAPI(title="Prophecy Loan Prediction API")
+
+# Configure CORS
+origins = [
+    "http://localhost:5173",  # React frontend URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for testing; restrict in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load environment variables
 load_dotenv()
@@ -31,9 +48,6 @@ def validate_env_variables():
         raise EnvironmentError(f"Missing environment variables: {', '.join(missing_vars)}")
 
 validate_env_variables()
-
-# Initialize FastAPI
-app = FastAPI(title="Prophecy Loan Prediction API")
 
 # Database setup
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -59,8 +73,23 @@ except Exception as e:
     logger.error(f"Failed to load model: {e}")
     raise e
 
+@app.get("/loan_applications", response_model=List[LoanApplication])
+def get_loan_applications(db: Session = Depends(get_db)):
+    """
+    Fetch all loan applications from the database.
+    """
+    try:
+        applications = db.query(LoanApplicationModel).all()
+        return applications  # Return the applications, even if empty
+    except Exception as e:
+        logger.error(f"Error fetching loan applications: {e}")
+        raise HTTPException(status_code=500, detail=f"Error fetching loan applications: {str(e)}")
+
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(loan_application: LoanApplicationCreate, db: Session = Depends(get_db)):
+    """
+    Predict loan approval and default risk, then save the application.
+    """
     input_data = loan_application.dict()
     try:
         approval_prob, default_risk = model.predict(input_data)
@@ -77,8 +106,7 @@ async def predict(loan_application: LoanApplicationCreate, db: Session = Depends
             marital_status=loan_application.marital_status,
             number_of_dependents=loan_application.number_of_dependents,
             employment_status=loan_application.employment_status,
-            household_income_bracket=loan_application.household_income_bracket,
-            approximate_household=loan_application.approximate_household,
+            household_income_bracket=loan_application.household_income_bracket,  # Corrected field name
             approximate_savings_amount=loan_application.approximate_savings_amount,
             monthly_rent_mortgage=loan_application.monthly_rent_mortgage,
             monthly_utilities=loan_application.monthly_utilities,
@@ -87,6 +115,9 @@ async def predict(loan_application: LoanApplicationCreate, db: Session = Depends
             monthly_subscriptions=loan_application.monthly_subscriptions,
             monthly_food_costs=loan_application.monthly_food_costs,
             monthly_misc_costs=loan_application.monthly_misc_costs,
+            desired_loan_amount=loan_application.desired_loan_amount,         # Corrected field name
+            desired_loan_apr=loan_application.desired_loan_apr,               # Corrected field name
+            desired_loan_period=loan_application.desired_loan_period,         # Corrected field name
             prediction=approval_prob
         )
         db.add(loan_record)
