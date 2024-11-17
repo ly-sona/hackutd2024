@@ -1,0 +1,33 @@
+/* src/pages/Dashboard.css */
+
+/* Dashboard Container */
+.dashboard-container {
+    padding: 0; /* Remove extra padding as App.css handles padding */
+    background: transparent; /* Inherit background from .main-content */
+    min-height: 100%;
+  }
+  
+  /* Override if any specific styles are needed for the dashboard content */
+  .content-overlay {
+    padding: 0; /* Already padded in App.css */
+    background-color: transparent; /* Remove if already handled in App.css */
+    border-radius: 0; /* Remove border-radius if not needed */
+  }
+  
+  /* Adjust Ant Design Cards within the Dashboard */
+  .dashboard-container .ant-card {
+    border-radius: 8px;
+  }
+  
+  /* Ensure the metrics cards take full width on smaller screens */
+  @media (max-width: 768px) {
+    .dashboard-container .ant-col {
+      padding: 8px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dashboard-container .ant-col {
+      padding: 4px;
+    }
+  }  
