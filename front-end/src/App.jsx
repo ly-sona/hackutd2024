@@ -1,19 +1,18 @@
-// src/App.jsx
+// App.jsx
 import { useState, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import throttle from 'lodash.throttle'; // Optional: For throttling
+import throttle from 'lodash.throttle';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Claims from './pages/Claims';
 import Sidebar from './components/Sidebar';
-import './App.css'; // Ensure this import is present
+import './App.css';
 
 function App() {
-  // State to track cursor position as percentages relative to main-content
-  const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 }); // Default center
+  const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 });
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const mainContentRef = useRef(null);
 
-  // Handler for mouse movement with throttling (optional)
   const handleMouseMove = useCallback(
     throttle((e) => {
       if (mainContentRef.current) {
@@ -22,23 +21,27 @@ function App() {
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         setCursorPos({ x, y });
       }
-    }, 50), // Throttle to once every 50ms
+    }, 50),
     []
   );
 
-  // Calculate radial gradient based on cursor position
   const calculateGradient = () => {
     const { x, y } = cursorPos;
-    // Define subtle light and dark forest green colors with transparency
-    const lightGreen = 'rgba(123, 156, 133, 0.5)'; // Subtle Medium Aquamarine with 50% opacity
-    const darkGreen = 'rgba(46, 66, 52, 0.8)';     // Forest Green with 80% opacity
+    const lightGreen = 'rgba(123, 156, 133, 0.5)';
+    const darkGreen = 'rgba(46, 66, 52, 0.8)';
     return `radial-gradient(circle at ${x}% ${y}%, ${lightGreen} 0%, ${darkGreen} 100%)`;
   };
 
   return (
     <Router>
       <div className="app-container">
-        <Sidebar />
+        <Sidebar isVisible={isSidebarVisible} />
+        <button
+          className="toggle-sidebar-btn"
+          onClick={() => setIsSidebarVisible((prev) => !prev)}
+        >
+          {isSidebarVisible ? '❮' : '❯'}
+        </button>
         <div
           className="main-content"
           ref={mainContentRef}
@@ -50,7 +53,6 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/claims" element={<Claims />} />
-              {/* Add more routes as needed */}
             </Routes>
           </div>
         </div>

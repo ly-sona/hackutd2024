@@ -77,3 +77,17 @@
     margin-left: 120px;
   }
 }
+
+/* App.css */
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 200px; /* Default sidebar width */
+  transition: margin-left 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth transition */
+  background: radial-gradient(circle at 50% 50%, rgba(123, 156, 133, 0.5), rgba(46, 66, 52, 0.8)); /* Gradient */
+}
+
+.sidebar.hidden ~ .main-content {
+  margin-left: 0; /* Fill the screen when sidebar is hidden */
+}
