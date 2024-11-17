@@ -1,132 +1,80 @@
-// src/pages/ApplyLoan.jsx
-
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import './ApplyLoan.css';
 
 const ApplyLoan = () => {
-  const [formData, setFormData] = useState({
-    age: '',
-    income: '',
-    employment_status: '',
-    loan_amount: '',
-    loan_term: '',
-    loan_purpose: '',
-  });
+  const [loanAmount, setLoanAmount] = useState('');
+  const [isAgreementChecked, setIsAgreementChecked] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const [prediction, setPrediction] = useState(null);
-  const [message, setMessage] = useState('');
+  useEffect(() => {
+    // Enable the button only if conditions are met
+    setIsButtonDisabled(!(loanAmount >= 1000 && isAgreementChecked));
+  }, [loanAmount, isAgreementChecked]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+    setLoanAmount(value ? parseFloat(value) : '');
   };
 
-  const handleSubmit = async (e) => {
+  const handleCheckboxChange = (e) => {
+    setIsAgreementChecked(e.target.checked);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validate form data
-    if (
-      !formData.age ||
-      !formData.income ||
-      !formData.employment_status ||
-      !formData.loan_amount ||
-      !formData.loan_term ||
-      !formData.loan_purpose
-    ) {
-      setMessage('Please fill in all required fields.');
-      return;
-    }
-
-    try {
-      const response = await axios.post('http://localhost:8000/score_loan', formData);
-      setPrediction(response.data);
-      setMessage('Loan application submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting loan application:', error);
-      setMessage('Failed to submit loan application.');
-    }
+    alert(`Loan application submitted for $${loanAmount}!`);
   };
 
   return (
     <div className="apply-loan-container">
-      <h1>Apply for a Loan</h1>
-      <form className="apply-loan-form" onSubmit={handleSubmit}>
-        <label>
-          Age:
+      <form className="loan-box" onSubmit={handleSubmit}>
+        {/* Loan Input Section */}
+        <div className="loan-input-section">
+          <h2>Apply for a Loan</h2>
+          <label htmlFor="loan-amount">Loan Amount</label>
           <input
+            id="loan-amount"
             type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            required
+            value={loanAmount}
+            onChange={handleAmountChange}
+            placeholder="Enter amount"
+            min="1000"
+            step="100"
           />
-        </label>
-        <label>
-          Income:
-          <input
-            type="number"
-            name="income"
-            value={formData.income}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Employment Status:
-          <input
-            type="text"
-            name="employment_status"
-            value={formData.employment_status}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Loan Amount:
-          <input
-            type="number"
-            name="loan_amount"
-            value={formData.loan_amount}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Loan Term (months):
-          <input
-            type="number"
-            name="loan_term"
-            value={formData.loan_term}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Loan Purpose:
-          <input
-            type="text"
-            name="loan_purpose"
-            value={formData.loan_purpose}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <button type="submit">Submit Application</button>
-      </form>
-
-      {message && <p>{message}</p>}
-
-      {prediction && (
-        <div className="prediction-result">
-          <h2>Prediction Result</h2>
-          <p>
-            <strong>Approval Probability:</strong> {(prediction.approval_probability * 100).toFixed(2)}%
-          </p>
-          <p>
-            <strong>Default Risk:</strong> {(prediction.default_risk * 100).toFixed(2)}%
+          <p className="min-amount">
+            Minimum loan amount is <strong>$1000</strong>
           </p>
         </div>
-      )}
+
+        {/* Terms Section */}
+        <div className="terms-section">
+          <h3>Terms of Your Agreement</h3>
+          <p>State of Resident: <strong>Texas</strong></p>
+          <p>Term: <strong>1 Year</strong></p>
+          <p>
+            Loan Amount: <strong>{loanAmount ? `$${loanAmount}` : '--'}</strong>
+          </p>
+          <p>Rate/APR: <strong>10%</strong></p>
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              id="agreement"
+              checked={isAgreementChecked}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor="agreement">
+              I verify that I agree to the terms listed above.
+            </label>
+          </div>
+          <button
+            type="submit"
+            className={`submit-button ${isButtonDisabled ? 'disabled' : ''}`}
+            disabled={isButtonDisabled}
+          >
+            Apply
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
