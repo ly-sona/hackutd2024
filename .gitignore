@@ -1,0 +1,240 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Pytest
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Cython debug symbols
+cython_debug/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.kate-swp
+*.swp
+*~
+
+# Logs
+logs/
+*.log
+
+# Data directories
+data/
+data/**/*
+!data/README.md
+
+# Model directories
+model/
+model/**/*
+!model/README.md
+
+# Scripts compiled files
+scripts/*.pyc
+
+# MacOS files
+.DS_Store
+
+# Thumbnails
+._*
+
+# Backup files
+*.bak
+
+# Temporary files
+*.tmp
+
+# Ignore secret files
+secrets/
+*.key
+*.pem
+
+# Ignore configuration files
+config.yaml
+config.yml
+config.json
+
+# Ignore outputs
+output/
+outputs/
+
+# Ignore pip files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore virtual environment files
+pyvenv.cfg
+
+# Ignore coverage reports
+coverage/
+coverage.*.xml
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore celery beat schedule file
+celerybeat-schedule
+
+# Ignore IPython history
+.history
+
+# Ignore SQLite databases
+*.sqlite3
+
+# Ignore Jupyter Notebook configuration
+.jupyter/
+
+# Ignore static files (if any)
+static/
+staticfiles/
+
+# Ignore migrations (if using Django)
+migrations/
+
+# Ignore Python egg info
+*.egg-info/
+.eggs/
+
+# Ignore temporary files created by editors
+*~
+
+# Ignore compressed files
+*.zip
+*.tar.gz
+*.rar
+
+# Ignore images and videos (if not needed)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+
+# Ignore PDF files
+*.pdf
+
+# Ignore Excel files
+*.xls
+*.xlsx
+
+# Ignore JSON and CSV files (if they contain data)
+*.json
+*.csv
+
+# Ignore pickle files
+*.pickle
+*.pkl
+
+# Ignore HDF5 files
+*.h5
+*.hdf5
+
+# Ignore PyCharm files
+*.idea/
+
+# Ignore Visual Studio Code files
+*.vscode/
+
+# Ignore temporary folders
+tmp/
+temp/
