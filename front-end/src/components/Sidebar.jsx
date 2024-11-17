@@ -32,33 +32,35 @@ function Sidebar({ isVisible }) {
       ref={sidebarRef}
       className={`sidebar ${isVisible ? 'visible' : 'hidden'}`}
     >
-      <div className="logo-container">
-        <img src={LogoText} alt="Logo" className="logo" />
+      <div className="navbar-container">
+        <div className="logo-container">
+          <img src={LogoText} alt="Logo" className="logo" />
+        </div>
+        <nav className="navbar">
+          <ul>
+          <li>
+              <NavLink to="/" className="text-lg font-bold" end>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/CusInfo" className="text-lg font-bold" end>
+                Customer Information
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/apply-loan" className="text-lg font-bold" end>
+              Loan Approval Risk
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/default" className="text-lg font-bold" end>
+              Default Risk
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav className="navbar">
-        <ul>
-        <li>
-            <NavLink to="/" className="text-lg font-bold" end>
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/CusInfo" className="text-lg font-bold" end>
-              Customer Information
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/apply-loan" className="text-lg font-bold" end>
-            Loan Approval Risk
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/default" className="text-lg font-bold" end>
-            Default Risk
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
     </div>
   );
 }

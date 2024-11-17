@@ -51,8 +51,8 @@ function App() {
 
   const calculateGradient = () => {
     const { x, y } = cursorPos;
-    const lightPurple = 'rgba(123, 104, 238, 0.2)';
-    const darkPurple = 'rgba(75, 0, 130, 0.8)';
+    const lightPurple = 'rgba(41, 27, 74, 1)';
+    const darkPurple = 'rgba(46, 37, 59, 1)';
     return `radial-gradient(circle at ${x}% ${y}%, ${lightPurple} 0%, ${darkPurple} 100%)`;
   };
 
