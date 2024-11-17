@@ -31,14 +31,19 @@ class Model:
         except Exception as e:
             raise RuntimeError(f"Error loading model or label encoders: {e}")
     
-    def predict(self, input_data: dict):
+    def preprocess_input(self, input_data: dict) -> pd.DataFrame:
+        """
+        Preprocesses the input data to match the training data format.
+        """
+        # Convert input_data dict to DataFrame
         df = pd.DataFrame([input_data])
         
-        # Encode categorical variables using label encoders
+        # Handle categorical variables using label encoders
         for col, le in self.label_encoders.items():
             if col in df.columns:
-                # Handle unknown categories by assigning a default value (e.g., -1)
+                # Convert to string and fill NaNs
                 df[col] = df[col].astype(str).fillna('Missing')
+                # Handle unseen labels by assigning a default value (e.g., -1)
                 df[col] = df[col].apply(lambda x: le.transform([x])[0] if x in le.classes_ else -1)
         
         # Ensure all required features are present
@@ -46,9 +51,21 @@ class Model:
             if feature not in df.columns:
                 df[feature] = 0  # Assign a default value or handle appropriately
         
-        X = df[self.features]
+        # Reorder columns to match the model's feature list
+        df = df[self.features]
+        
+        return df
+    
+    def predict(self, input_data: dict):
+        """
+        Makes a prediction based on the input data.
+        Returns approval probability and default risk.
+        """
+        df = self.preprocess_input(input_data)
+        
         try:
-            approval_prob = self.model.predict_proba(X)[:, 1][0]
+            # Predict probabilities using the LightGBM model
+            approval_prob = self.model.predict(df)[0]
             default_risk = 1 - approval_prob  # Assuming inverse relationship
         except Exception as e:
             raise RuntimeError(f"Prediction error: {e}")

@@ -1,18 +1,58 @@
 # backend/app/schemas.py
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from typing import Optional
+from datetime import datetime
 
-class LoanApplication(BaseModel):
-    # Define all required fields based on your dataset features
-    NAME_CONTRACT_TYPE: Optional[str] = Field(None, example="Cash loans")
-    CODE_GENDER: Optional[str] = Field(None, example="M")
-    AMT_INCOME_TOTAL: Optional[float] = Field(None, example=50000.0)
-    AMT_CREDIT: Optional[float] = Field(None, example=200000.0)
-    AMT_ANNUITY: Optional[float] = Field(None, example=15000.0)
-    # Add more fields as necessary, ensuring they match the model's expected input
+class LoanApplicationBase(BaseModel):
+    name: str
+    age_group: str
+    marital_status: str
+    number_of_dependents: int
+    employment_status: str
+    household_income_bracket: str
+    approximate_household: float
+    approximate_savings_amount: float
+    monthly_rent_mortgage: float
+    monthly_utilities: float
+    monthly_insurance: float
+    monthly_loan_payments: float
+    monthly_subscriptions: float
+    monthly_food_costs: float
+    monthly_misc_costs: float
+
+    model_config = ConfigDict(from_attributes=True)
+
+    @field_validator(
+        'number_of_dependents', 
+        'approximate_household', 
+        'approximate_savings_amount',
+        'monthly_rent_mortgage', 
+        'monthly_utilities', 
+        'monthly_insurance',
+        'monthly_loan_payments', 
+        'monthly_subscriptions', 
+        'monthly_food_costs',
+        'monthly_misc_costs'
+    )
+    def non_negative(cls, v, info):
+        if v < 0:
+            raise ValueError(f"{info.field.name} must be non-negative")
+        return v
+
+class LoanApplicationCreate(LoanApplicationBase):
+    pass
+
+class LoanApplication(LoanApplicationBase):
+    name: str
+    status: str
+    prediction: Optional[float]
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 class PredictionResponse(BaseModel):
-    approval_probability: float = Field(..., example=0.85)
-    default_risk: float = Field(..., example=0.15)
-    documents_ipfs_hash: Optional[str] = Field(None, example="Qm...")
+    approval_probability: float
+    default_risk: float
+
+    model_config = ConfigDict(from_attributes=True)

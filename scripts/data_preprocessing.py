@@ -6,6 +6,19 @@ import os
 import joblib
 from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
+import logging
+
+# -------------------------------
+# Configure Logging
+# -------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 # -------------------------------
 # Feature Engineering Functions
@@ -22,12 +35,13 @@ def create_age_group(df):
     bins = [0, 25, 35, 45, 55, 65, 100]
     labels = ['<25', '25-34', '35-44', '45-54', '55-64', '65+']
     df['Age_Group'] = pd.cut(df['Age'], bins=bins, labels=labels, right=False)
-    print("Created 'Age_Group'")
+    logger.info("Created 'Age_Group'")
     return df
 
 def encode_marital_status(df):
     """
     Encodes 'Marital_Status' based on 'NAME_FAMILY_STATUS'.
+    Drops the 'NAME' column if it exists.
     """
     if 'NAME_FAMILY_STATUS' not in df.columns:
         df['Marital_Status'] = 'Unknown'
@@ -45,7 +59,7 @@ def encode_marital_status(df):
         df['Marital_Status'] = df['Marital_Status'].map(marital_mapping)
         # Handle missing values
         df['Marital_Status'] = df['Marital_Status'].fillna('Unknown')
-    print("Encoded 'Marital_Status'")
+    logger.info("Encoded 'Marital_Status'")
     return df
 
 def calculate_dependents(df):
@@ -56,7 +70,7 @@ def calculate_dependents(df):
         df['Number_of_Dependents'] = 0
     else:
         df['Number_of_Dependents'] = df['CNT_CHILDREN']
-    print("Calculated 'Number_of_Dependents'")
+    logger.info("Calculated 'Number_of_Dependents'")
     return df
 
 def determine_employment_status(df):
@@ -69,7 +83,7 @@ def determine_employment_status(df):
         df['Employment_Status'] = df['DAYS_EMPLOYED'].apply(
             lambda x: 'Employed' if x > 0 else 'Unemployed'
         )
-    print("Determined 'Employment_Status'")
+    logger.info("Determined 'Employment_Status'")
     return df
 
 def income_bracket(df):
@@ -82,7 +96,7 @@ def income_bracket(df):
     bins = [0, 30000, 60000, 90000, 120000, 150000, 1e6]
     labels = ['<30k', '30k-60k', '60k-90k', '90k-120k', '120k-150k', '150k+']
     df['Income_Bracket'] = pd.cut(df['AMT_INCOME_TOTAL'], bins=bins, labels=labels, right=False)
-    print("Created 'Income_Bracket'")
+    logger.info("Created 'Income_Bracket'")
     return df
 
 def approximate_household(df):
@@ -93,7 +107,7 @@ def approximate_household(df):
         df['Approx_Household'] = 1  # Assuming at least 1 member
     else:
         df['Approx_Household'] = df['CNT_FAM_MEMBERS']
-    print("Created 'Approx_Household'")
+    logger.info("Created 'Approx_Household'")
     return df
 
 def estimate_savings(df):
@@ -119,7 +133,7 @@ def estimate_savings(df):
     # Handle negative savings
     df['Approx_Savings'] = df['Approx_Savings'].apply(lambda x: x if x > 0 else 0)
     
-    print("Estimated 'Approx_Savings'")
+    logger.info("Estimated 'Approx_Savings'")
     return df
 
 def estimate_utilities(df):
@@ -130,7 +144,7 @@ def estimate_utilities(df):
         df['Monthly_Utilities'] = 0
     else:
         df['Monthly_Utilities'] = df['AMT_GOODS_PRICE'] * 0.01  # Adjust as needed
-    print("Estimated 'Monthly_Utilities'")
+    logger.info("Estimated 'Monthly_Utilities'")
     return df
 
 def estimate_insurance(df):
@@ -141,7 +155,7 @@ def estimate_insurance(df):
         df['Monthly_Insurance'] = 0
     else:
         df['Monthly_Insurance'] = df['AMT_ANNUITY'] * 0.05  # Adjust as needed
-    print("Estimated 'Monthly_Insurance'")
+    logger.info("Estimated 'Monthly_Insurance'")
     return df
 
 def estimate_subscriptions(df):
@@ -149,7 +163,7 @@ def estimate_subscriptions(df):
     Estimates 'Monthly_Subscriptions' with a fixed value.
     """
     df['Monthly_Subscriptions'] = 20  # Fixed amount in currency units
-    print("Estimated 'Monthly_Subscriptions'")
+    logger.info("Estimated 'Monthly_Subscriptions'")
     return df
 
 def estimate_food_costs(df):
@@ -160,7 +174,7 @@ def estimate_food_costs(df):
         df['Monthly_Food_Costs'] = 150  # Default value
     else:
         df['Monthly_Food_Costs'] = df['Number_of_Dependents'] * 150  # Example value per dependent
-    print("Estimated 'Monthly_Food_Costs'")
+    logger.info("Estimated 'Monthly_Food_Costs'")
     return df
 
 def estimate_misc_costs(df):
@@ -180,7 +194,7 @@ def estimate_misc_costs(df):
     
     df['Monthly_Misc_Costs'] = df['Monthly_Income'] - df[expense_cols].sum(axis=1)
     df['Monthly_Misc_Costs'] = df['Monthly_Misc_Costs'].apply(lambda x: x if x > 0 else 0)
-    print("Estimated 'Monthly_Misc_Costs'")
+    logger.info("Estimated 'Monthly_Misc_Costs'")
     return df
 
 def feature_engineering(df):
@@ -199,7 +213,7 @@ def feature_engineering(df):
     df = estimate_subscriptions(df)
     df = estimate_food_costs(df)
     df = estimate_misc_costs(df)
-    print("Completed feature engineering.")
+    logger.info("Completed feature engineering.")
     return df
 
 # -------------------------------
@@ -231,10 +245,10 @@ def load_data(data_dir, is_train=True):
         installments_payments = pd.read_csv(os.path.join(data_dir, 'installments_payments.csv')).rename(str.upper, axis='columns')
         previous_application = pd.read_csv(os.path.join(data_dir, 'previous_application.csv')).rename(str.upper, axis='columns')
         
-        print(f"Loaded data from {data_dir}")
+        logger.info(f"Loaded data from {data_dir}")
         return application, bureau, bureau_balance, credit_card_balance, POS_CASH_balance, installments_payments, previous_application
     except Exception as e:
-        print(f"Error loading data: {e}")
+        logger.error(f"Error loading data: {e}")
         raise
 
 def preprocess_application(application_train, is_train=True):
@@ -242,10 +256,10 @@ def preprocess_application(application_train, is_train=True):
     Preprocesses the application data by dropping unnecessary columns.
     """
     # Drop only unnecessary ID columns, retain 'SK_ID_CURR' or 'SK_ID_TEST'
-    columns_to_drop = ['SK_ID_BUREAU']
+    columns_to_drop = ['SK_ID_BUREAU', 'NAME']  # Dropping 'NAME' to exclude the Name field
     existing_columns_to_drop = [col for col in columns_to_drop if col in application_train.columns]
     application_train = application_train.drop(existing_columns_to_drop, axis=1, errors='ignore')
-    print("Preprocessed application data.")
+    logger.info("Preprocessed application data and dropped 'Name' column if present.")
     return application_train
 
 def preprocess_previous_application(previous_application, is_train=True):
@@ -280,7 +294,7 @@ def preprocess_previous_application(previous_application, is_train=True):
     # Save the mapping DataFrame for later use
     os.makedirs('../model', exist_ok=True)
     joblib.dump(mapping_df, '../model/skidprev_skidcurr_mapping.pkl')
-    print("Preprocessed previous application data.")
+    logger.info("Preprocessed previous application data.")
     
     return previous_app_agg
 
@@ -288,7 +302,7 @@ def preprocess_bureau(bureau, bureau_balance):
     """
     Preprocesses the bureau data by merging with bureau_balance and aggregating.
     """
-    print("Starting preprocess_bureau")
+    logger.info("Starting preprocess_bureau")
     # Merge bureau with bureau_balance
     bureau_balance_agg = bureau_balance.groupby('SK_ID_BUREAU').agg(
         MONTHS_BALANCE_min=('MONTHS_BALANCE', 'min'),
@@ -320,14 +334,14 @@ def preprocess_bureau(bureau, bureau_balance):
         STATUS_mode=('STATUS_mode_or_default', mode_or_default)
     ).reset_index()
     
-    print("Preprocessed bureau data.")
+    logger.info("Preprocessed bureau data.")
     return bureau_agg
 
 def preprocess_credit_card(credit_card_balance):
     """
     Preprocesses the credit card balance data by aggregating.
     """
-    print("Starting preprocess_credit_card")
+    logger.info("Starting preprocess_credit_card")
     # Ensure 'SK_ID_CURR' exists in 'credit_card_balance'
     if 'SK_ID_CURR' not in credit_card_balance.columns:
         raise KeyError("'SK_ID_CURR' column is missing from 'credit_card_balance' DataFrame.")
@@ -347,14 +361,14 @@ def preprocess_credit_card(credit_card_balance):
     # Rename columns with prefix
     credit_card_agg.columns = ['SK_ID_CURR'] + ['credit_card_' + col for col in credit_card_agg.columns[1:]]
     
-    print("Aggregated credit_card_agg successfully.")
+    logger.info("Aggregated credit_card_agg successfully.")
     return credit_card_agg
 
 def preprocess_POS_cash(POS_CASH_balance):
     """
     Preprocesses the POS cash balance data by aggregating.
     """
-    print("Starting preprocess_POS_cash")
+    logger.info("Starting preprocess_POS_cash")
     # Aggregate POS cash balance data
     pos_cash_agg = POS_CASH_balance.groupby('SK_ID_CURR').agg(
         MONTHS_BALANCE_min=('MONTHS_BALANCE', 'min'),
@@ -368,14 +382,14 @@ def preprocess_POS_cash(POS_CASH_balance):
     # Rename columns with prefix
     pos_cash_agg.columns = ['SK_ID_CURR'] + ['pos_cash_' + col for col in pos_cash_agg.columns[1:]]
     
-    print("Aggregated POS cash balance data successfully.")
+    logger.info("Aggregated POS cash balance data successfully.")
     return pos_cash_agg
 
 def preprocess_installments(installments_payments):
     """
     Preprocesses the installments payments data by aggregating.
     """
-    print("Starting preprocess_installments")
+    logger.info("Starting preprocess_installments")
     # Ensure 'SK_ID_CURR' exists in 'installments_payments'
     if 'SK_ID_CURR' not in installments_payments.columns:
         raise KeyError("'SK_ID_CURR' column is missing from 'installments_payments' DataFrame.")
@@ -393,7 +407,7 @@ def preprocess_installments(installments_payments):
     # Rename columns with prefix
     installments_agg.columns = ['SK_ID_CURR'] + ['installments_' + col for col in installments_agg.columns[1:]]
     
-    print("Aggregated installments_agg successfully.")
+    logger.info("Aggregated installments_agg successfully.")
     return installments_agg
 
 # -------------------------------
@@ -419,7 +433,7 @@ def preprocess_data(is_train=True):
         installments_agg = preprocess_installments(installments_payments)
         
         # Merge all datasets
-        print("Starting to merge all datasets.")
+        logger.info("Starting to merge all datasets.")
         df = application.merge(bureau_agg, on='SK_ID_CURR', how='left') \
                           .merge(credit_card_agg, on='SK_ID_CURR', how='left') \
                           .merge(pos_cash_agg, on='SK_ID_CURR', how='left') \
@@ -428,29 +442,29 @@ def preprocess_data(is_train=True):
         
         # Handle Aggregated Dictionary Columns
         if 'CREDIT_ACTIVE_counts' in df.columns:
-            print("Handling 'CREDIT_ACTIVE_counts' with One-Hot Encoding.")
+            logger.info("Handling 'CREDIT_ACTIVE_counts' with One-Hot Encoding.")
             credit_active_df = pd.json_normalize(df['CREDIT_ACTIVE_counts'])
             credit_active_df.columns = ['CREDIT_ACTIVE_' + str(col) for col in credit_active_df.columns]
             df = pd.concat([df.drop(['CREDIT_ACTIVE_counts'], axis=1), credit_active_df], axis=1)
         
         if 'CREDIT_CURRENCY_counts' in df.columns:
-            print("Handling 'CREDIT_CURRENCY_counts' with One-Hot Encoding.")
+            logger.info("Handling 'CREDIT_CURRENCY_counts' with One-Hot Encoding.")
             credit_currency_df = pd.json_normalize(df['CREDIT_CURRENCY_counts'])
             credit_currency_df.columns = ['CREDIT_CURRENCY_' + str(col) for col in credit_currency_df.columns]
             df = pd.concat([df.drop(['CREDIT_CURRENCY_counts'], axis=1), credit_currency_df], axis=1)
         
         # Feature Engineering
-        print("Starting feature engineering.")
+        logger.info("Starting feature engineering.")
         df = feature_engineering(df)
         
         # Handle missing values
-        print("Handling missing values.")
+        logger.info("Handling missing values.")
         imputer = SimpleImputer(strategy='median')
         df_numeric = df.select_dtypes(include=['int64', 'float64'])
         df_numeric_imputed = pd.DataFrame(imputer.fit_transform(df_numeric), columns=df_numeric.columns)
         
         # Encode categorical variables
-        print("Encoding categorical variables.")
+        logger.info("Encoding categorical variables.")
         categorical_cols = df.select_dtypes(include=['object', 'category']).columns
         label_encoders = {}
         for col in categorical_cols:
@@ -458,34 +472,35 @@ def preprocess_data(is_train=True):
             # Convert categorical columns to string type to avoid issues with new categories
             df[col] = df[col].astype(str)
             df[col] = df[col].fillna('Missing')  # Fill any remaining NaNs with 'Missing'
-            df[col] = le.fit_transform(df[col])
+            le.fit(df[col])  # Fit on the entire data before transforming
+            df[col] = le.transform(df[col])
             label_encoders[col] = le
-            print(f"Encoded '{col}'")
+            logger.info(f"Encoded '{col}'")
         
         # Combine numeric and categorical data
-        print("Combining numeric and categorical data.")
+        logger.info("Combining numeric and categorical data.")
         df_processed = pd.concat([df_numeric_imputed, df[categorical_cols]], axis=1)
         
-        # Save preprocessed data
+        # Save preprocessed data and label encoders
         os.makedirs('../data/processed/', exist_ok=True)
         os.makedirs('../model/', exist_ok=True)
         
         if is_train:
             processed_path = '../data/processed/application_train_processed.csv'
-            label_encoder_path = '../model/label_encoders_train.pkl'
-            print("Saving preprocessed training data.")
+            label_encoder_path = '../model/label_encoders.pkl'  # Unified label encoder file
+            logger.info("Saving preprocessed training data.")
         else:
             processed_path = '../data/processed/application_test_processed.csv'
-            label_encoder_path = '../model/label_encoders_test.pkl'
-            print("Saving preprocessed test data.")
+            label_encoder_path = '../model/label_encoders.pkl'  # Use the same label encoder
+            logger.info("Saving preprocessed test data.")
         
         df_processed.to_csv(processed_path, index=False)
         joblib.dump(label_encoders, label_encoder_path)
-        print(f'Preprocessed data saved to {processed_path}')
-        print(f'Label encoders saved to {label_encoder_path}')
+        logger.info(f'Preprocessed data saved to {processed_path}')
+        logger.info(f'Label encoders saved to {label_encoder_path}')
         
     except Exception as e:
-        print(f"An error occurred during preprocessing: {e}")
+        logger.error(f"An error occurred during preprocessing: {e}")
         raise
 
 # -------------------------------
@@ -494,11 +509,11 @@ def preprocess_data(is_train=True):
 
 def main():
     # Process training data
-    print("Processing training data.")
+    logger.info("Processing training data.")
     preprocess_data(is_train=True)
     
     # Process test data
-    print("Processing test data.")
+    logger.info("Processing test data.")
     preprocess_data(is_train=False)
 
 if __name__ == "__main__":
