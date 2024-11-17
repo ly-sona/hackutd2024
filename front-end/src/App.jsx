@@ -1,19 +1,46 @@
-// App.jsx
-import { useState, useCallback, useRef } from 'react';
+// src/App.jsx
+
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import throttle from 'lodash.throttle';
-import Dashboard from './pages/Dashboard';
-import Analytics from './pages/Analytics';
-import Claims from './pages/Claims';
+import anime from 'animejs';
+import CusInfo from './pages/CusInfo';
+import Home from './pages/Home';
+import LoanRisk from './pages/LoanRisk';
+import Default from './pages/Default';
 import Sidebar from './components/Sidebar';
+import SplashScreen from './components/SplashScreen';
 import './App.css';
 
 function App() {
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 });
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
   const mainContentRef = useRef(null);
 
-  const handleMouseMove = useCallback(
+  useEffect(() => {
+    anime({
+      targets: '.splash-logo',
+      opacity: [0, 1],
+      duration: 1000,
+      easing: 'easeInOutQuad',
+      complete: () => {
+        setTimeout(() => {
+          anime({
+            targets: '.splash-screen',
+            opacity: [1, 0],
+            duration: 1000,
+            easing: 'easeInOutQuad',
+            complete: () => {
+              setIsSplashVisible(false); // Ensure this is called
+            },
+          });
+        }, 2000); // Display logo for 2 seconds
+      },
+    });
+  }, []);
+
+  const handleMouseMove = useRef(
     throttle((e) => {
       if (mainContentRef.current) {
         const rect = mainContentRef.current.getBoundingClientRect();
@@ -21,16 +48,19 @@ function App() {
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         setCursorPos({ x, y });
       }
-    }, 50),
-    []
-  );
+    }, 50)
+  ).current;
 
   const calculateGradient = () => {
     const { x, y } = cursorPos;
-    const lightGreen = 'rgba(123, 156, 133, 0.5)';
-    const darkGreen = 'rgba(46, 66, 52, 0.8)';
-    return `radial-gradient(circle at ${x}% ${y}%, ${lightGreen} 0%, ${darkGreen} 100%)`;
+    const lightPurple = 'rgba(123, 104, 238, 0.2)';
+    const darkPurple = 'rgba(75, 0, 130, 0.8)';
+    return `radial-gradient(circle at ${x}% ${y}%, ${lightPurple} 0%, ${darkPurple} 100%)`;
   };
+
+  if (isSplashVisible) {
+    return <SplashScreen />;
+  }
 
   return (
     <Router>
@@ -43,16 +73,17 @@ function App() {
           {isSidebarVisible ? '❮' : '❯'}
         </button>
         <div
-          className="main-content"
+          className={`main-content ${isSidebarVisible ? '' : 'full-width'}`}
           ref={mainContentRef}
           onMouseMove={handleMouseMove}
           style={{ background: calculateGradient() }}
         >
           <div className="content-overlay">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/claims" element={<Claims />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/CusInfo" element={<CusInfo />} />
+              <Route path="/default" element={<Default />} />
+              <Route path="/apply-loan" render={(props) => <LoanRisk {...props.location.state} />} />
             </Routes>
           </div>
         </div>
