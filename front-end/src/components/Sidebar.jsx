@@ -2,37 +2,26 @@
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
-function Sidebar() {
+function Sidebar({ isVisible }) {
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isVisible ? 'visible' : 'hidden'}`}>
       <nav className="navbar">
         <ul>
           <li>
-            <NavLink  
-              to="/"
-              end
-              className={({ isActive }) => (isActive ? 'active' : undefined)}
-            >
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : undefined)}>
               Dashboard
             </NavLink>
           </li>
           <li>
-            <NavLink  
-              to="/analytics"
-              className={({ isActive }) => (isActive ? 'active' : undefined)}
-            >
+            <NavLink to="/analytics" className={({ isActive }) => (isActive ? 'active' : undefined)}>
               Analytics
             </NavLink>
           </li>
           <li>
-            <NavLink  
-              to="/claims"
-              className={({ isActive }) => (isActive ? 'active' : undefined)}
-            >
+            <NavLink to="/claims" className={({ isActive }) => (isActive ? 'active' : undefined)}>
               Claims
             </NavLink>
           </li>
-          {/* Add more navigation links as needed */}
         </ul>
       </nav>
     </div>
