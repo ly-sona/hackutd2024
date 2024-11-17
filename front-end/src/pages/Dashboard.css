@@ -16,7 +16,7 @@
 .loan-details-section {
   margin-bottom: 40px;
   padding: 20px;
-  background-color: #202040;
+  background-color: #1a1a2e;
   border-radius: 8px;
 }
 
@@ -43,7 +43,7 @@
 
 .graph-card {
   flex: 1 1 45%;
-  background-color: #202040;
+  background-color: #1a1a2e;
   padding: 20px;
   border-radius: 8px;
   opacity: 0; /* Start hidden for animation */

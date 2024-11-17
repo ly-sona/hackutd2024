@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import throttle from 'lodash.throttle';
 import anime from 'animejs';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import ApplyLoan from './pages/ApplyLoan';
 import LoanHistory from './pages/LoanHistory';
 import Sidebar from './components/Sidebar';
@@ -79,7 +80,8 @@ function App() {
         >
           <div className="content-overlay">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/apply-loan" element={<ApplyLoan />} />
               <Route path="/loan-history" element={<LoanHistory />} />
             </Routes>

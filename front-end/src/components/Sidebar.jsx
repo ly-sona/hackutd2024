@@ -37,8 +37,13 @@ function Sidebar({ isVisible }) {
       </div>
       <nav className="navbar">
         <ul>
-          <li>
+        <li>
             <NavLink to="/" end>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/dashboard" end>
               Dashboard
             </NavLink>
           </li>

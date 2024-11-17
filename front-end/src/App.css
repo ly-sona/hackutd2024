@@ -1,4 +1,4 @@
-/* src/App.css */
+/* src/App.css  */
 
 body {
   margin: 0;
@@ -25,7 +25,7 @@ body {
 }
 
 .main-content:not(.full-width) {
-  margin-left: 250px; /* Updated sidebar width */
+  margin-left: 250px; 
 }
 
 .content-overlay {
@@ -44,12 +44,12 @@ div {
   color: #ccc;
 }
 
-/* Toggle Button */
+
 .toggle-sidebar-btn {
   position: fixed;
   top: 20px;
   left: 250px;
-  background-color: #6a1b9a;
+  background-color: #1a1a2e;
   color: #ffffff;
   padding: 10px;
   border: none;
@@ -63,7 +63,7 @@ div {
   left: 0;
 }
 
-/* Cursor */
+
 
 body {
   cursor: url('/src/assets/cursor-default.cur'), auto;
@@ -75,3 +75,4 @@ button:hover,
 .section:hover {
   cursor: url('/src/assets/cursor-pointer.cur'), pointer;
 }
+

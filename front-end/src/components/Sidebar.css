@@ -5,7 +5,7 @@
   left: 0;
   height: 100%;
   width: 250px;
-  background-color: #2e004f;
+  background-color: #1a1a2e;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -50,7 +50,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(106, 27, 154, 0.5);
+  background: #1a1a2e;
   transition: left 0.3s ease;
   z-index: -1;
 }
@@ -60,6 +60,6 @@
 }
 
 .navbar ul li a.active {
-  background-color: #6a1b9a;
+  background-color: #1a1a2e;
   color: #ffffff;
 }
