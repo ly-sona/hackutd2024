@@ -10,12 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.7",
+    "antd": "^5.22.1",
     "axios": "^1.7.7",
-    "daisyui": "^4.12.14",
+    "chart.js": "^4.4.6",
+    "lodash.throttle": "^4.1.1",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0",
-    "tailwind": "^4.0.0"
+    "react-icons": "^5.3.0",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
@@ -27,7 +34,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
-    "tailwindcss": "^3.4.15",
     "vite": "^5.4.10"
   }
 }

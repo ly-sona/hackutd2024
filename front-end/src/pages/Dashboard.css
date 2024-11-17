@@ -1,0 +1,60 @@
+/* src/pages/Dashboard.css */
+
+.dashboard-container {
+  padding: 24px;
+  background: transparent;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+.dashboard-container h1 {
+  color: #ffffff;
+  margin-bottom: 24px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* User Information Section */
+.user-info-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: rgba(46, 66, 52, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-section h2 {
+  color: #1abc9c;
+  margin-bottom: 16px;
+}
+
+.user-info p {
+  margin: 8px 0;
+  color: #ecf0f1;
+}
+
+/* Graphs Section */
+.graphs-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.graph-card {
+  flex: 1 1 45%;
+  background-color: rgba(46, 66, 52, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.graph-card h3 {
+  color: #1abc9c;
+  margin-bottom: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .graph-card {
+    flex: 1 1 100%;
+  }
+}

@@ -1,0 +1,106 @@
+/* src/App.css */
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
+  transition: margin-left 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth transition */
+}
+
+.main-content.full-width {
+  margin-left: 0;
+}
+
+.main-content:not(.full-width) {
+  margin-left: 200px; /* Default sidebar width */
+}
+
+.content-overlay {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main-content h1,
+.main-content p,
+.main-content div {
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Toggle Button */
+.toggle-sidebar-btn {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 200px; /* Align with sidebar */
+  transform: translateY(-50%);
+  background-color: #1abc9c;
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0 5px 5px 0; /* Rounded edge on the right */
+  cursor: pointer;
+  z-index: 1000;
+  transition: left 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* Slide smoothly */
+}
+
+.sidebar.hidden + .toggle-sidebar-btn {
+  left: 0; /* Align button when sidebar is hidden */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .main-content:not(.full-width) {
+    margin-left: 150px;
+  }
+
+  .toggle-sidebar-btn {
+    left: 150px;
+  }
+
+  .sidebar.hidden + .toggle-sidebar-btn {
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content:not(.full-width) {
+    margin-left: 120px;
+  }
+
+  .toggle-sidebar-btn {
+    left: 120px;
+  }
+
+  .sidebar.hidden + .toggle-sidebar-btn {
+    left: 0;
+  }
+}
