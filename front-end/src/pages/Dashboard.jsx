@@ -1,250 +1,170 @@
 // src/pages/Dashboard.jsx
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Spin, Alert, Table, Button } from 'antd';
-import {
-  FileDoneOutlined,
-  WarningOutlined,
-  PercentageOutlined,
-} from '@ant-design/icons';
-import SummaryCard from '../components/SummaryCard';
+
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import './Dashboard.css'; // Optional: For additional styling
+import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement } from 'chart.js';
+import './Dashboard.css';
 
-function Dashboard() {
-  // State variables for Summary Metrics
-  const [totalClaims, setTotalClaims] = useState(null);
-  const [flaggedClaimsCount, setFlaggedClaimsCount] = useState(null);
-  const [fraudDetectionRate, setFraudDetectionRate] = useState(null);
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  PointElement,
+  LineElement
+);
 
-  // State variables for Flagged Claims Table
-  const [flaggedClaims, setFlaggedClaims] = useState([]);
-  const [claimsLoading, setClaimsLoading] = useState(true);
-  const [claimsError, setClaimsError] = useState(false);
+const Dashboard = () => {
+  const [userInfo, setUserInfo] = useState(null);
+  const [loanData, setLoanData] = useState([]);
+  const [approvalTrends, setApprovalTrends] = useState({ labels: [], data: [] });
+  const [loanPurposeDistribution, setLoanPurposeDistribution] = useState({ labels: [], data: [] });
+  const [defaultRiskTrends, setDefaultRiskTrends] = useState({ labels: [], data: [] });
 
-  // State variables for Fraud Trends Chart
-  const [fraudTrends, setFraudTrends] = useState({});
-  const [trendsLoading, setTrendsLoading] = useState(true);
-  const [trendsError, setTrendsError] = useState(false);
-
-  // Combined loading and error states for summary metrics
-  const [metricsLoading, setMetricsLoading] = useState(true);
-  const [metricsError, setMetricsError] = useState(false);
-
-  // Fetch Summary Metrics
   useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        setMetricsLoading(true);
-        setMetricsError(false);
-
-        // Fetch total claims processed
-        const fraudTrendsResponse = await axios.get('http://localhost:8000/fraud_trends');
-        const total = fraudTrendsResponse.data.total_claims_processed;
-
-        // Fetch flagged claims count
-        const flaggedClaimsResponse = await axios.get('http://localhost:8000/flagged_claims');
-        const flagged = flaggedClaimsResponse.data.flagged_claims;
-
-        // Calculate Fraud Detection Rate
-        const rate = ((flagged / total) * 100).toFixed(2);
-
-        setTotalClaims(total);
-        setFlaggedClaimsCount(flagged);
-        setFraudDetectionRate(rate);
-
-        setMetricsLoading(false);
-      } catch (err) {
-        console.error('Error fetching summary metrics:', err);
-        setMetricsError(true);
-        setMetricsLoading(false);
-      }
-    };
-
-    fetchMetrics();
+    fetchUserInfo();
+    fetchLoanData();
+    fetchApprovalTrends();
+    fetchLoanPurposeDistribution();
+    fetchDefaultRiskTrends();
   }, []);
 
-  // Fetch Flagged Claims Table Data
-  useEffect(() => {
-    const fetchFlaggedClaims = async () => {
-      try {
-        setClaimsLoading(true);
-        setClaimsError(false);
+  const fetchUserInfo = async () => {
+    try {
+      // Assuming an endpoint that returns user information
+      const response = await axios.get('http://localhost:8000/user_info');
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+    }
+  };
 
-        const response = await axios.get('http://localhost:8000/api/flagged_claims');
-        setFlaggedClaims(response.data);
-        setClaimsLoading(false);
-      } catch (err) {
-        console.error('Error fetching flagged claims:', err);
-        setClaimsError(true);
-        setClaimsLoading(false);
-      }
-    };
+  const fetchLoanData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/loan_applications');
+      setLoanData(response.data);
+    } catch (error) {
+      console.error('Error fetching loan data:', error);
+    }
+  };
 
-    fetchFlaggedClaims();
-  }, []);
+  const fetchApprovalTrends = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/approval_trends');
+      setApprovalTrends(response.data);
+    } catch (error) {
+      console.error('Error fetching approval trends:', error);
+    }
+  };
 
-  // Fetch Fraud Trends Data
-  useEffect(() => {
-    const fetchFraudTrends = async () => {
-      try {
-        setTrendsLoading(true);
-        setTrendsError(false);
+  const fetchLoanPurposeDistribution = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/loan_purpose_distribution');
+      setLoanPurposeDistribution(response.data);
+    } catch (error) {
+      console.error('Error fetching loan purpose distribution:', error);
+    }
+  };
 
-        const response = await axios.get('http://localhost:8000/api/fraud_trends');
-        setFraudTrends(response.data);
-        setTrendsLoading(false);
-      } catch (err) {
-        console.error('Error fetching fraud trends:', err);
-        setTrendsError(true);
-        setTrendsLoading(false);
-      }
-    };
+  const fetchDefaultRiskTrends = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/default_risk_trends');
+      setDefaultRiskTrends(response.data);
+    } catch (error) {
+      console.error('Error fetching default risk trends:', error);
+    }
+  };
 
-    fetchFraudTrends();
-  }, []);
-
-  // Data for Fraud Trends Bar Chart
-  const chartData = {
-    labels: fraudTrends.labels || [],
+  // Define chart data
+  const approvalChartData = {
+    labels: approvalTrends.labels,
     datasets: [
       {
-        label: 'Fraud Detection Rate (%)',
-        data: fraudTrends.data || [],
-        backgroundColor: 'rgba(52, 152, 219, 0.6)', // Light Blue
-        borderColor: 'rgba(52, 152, 219, 1)',
-        borderWidth: 1,
+        label: 'Approval Probability (%)',
+        data: approvalTrends.data,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
     ],
   };
 
-  // Options for Fraud Trends Bar Chart
-  const chartOptions = {
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
+  const loanPurposeChartData = {
+    labels: loanPurposeDistribution.labels,
+    datasets: [
+      {
+        label: 'Loan Purpose Distribution',
+        data: loanPurposeDistribution.data,
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          '#4BC0C0',
+          '#9966FF',
+          '#FF9F40',
+        ],
       },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    maintainAspectRatio: false,
+    ],
   };
 
-  // Columns for Flagged Claims Table
-  const columns = [
-    {
-      title: 'Claim ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: 'Fraud Score',
-      dataIndex: 'fraud_score',
-      key: 'fraud_score',
-      render: (score) => score.toFixed(2),
-    },
-    {
-      title: 'Details',
-      key: 'details',
-      render: (_, record) => <Button type="link">View Details</Button>,
-    },
-  ];
+  const defaultRiskChartData = {
+    labels: defaultRiskTrends.labels,
+    datasets: [
+      {
+        label: 'Default Risk (%)',
+        data: defaultRiskTrends.data,
+        fill: false,
+        borderColor: 'rgba(255, 99, 132, 0.6)',
+        tension: 0.1,
+      },
+    ],
+  };
 
   return (
     <div className="dashboard-container">
-      {/* Summary Metrics */}
-      {metricsLoading ? (
-        <Spin tip="Loading Summary Metrics..." size="large" />
-      ) : metricsError ? (
-        <Alert
-          message="Error"
-          description="There was an error fetching the summary metrics."
-          type="error"
-          showIcon
-        />
-      ) : (
-        <Row gutter={[16, 16]} className="summary-metrics-row">
-          <Col xs={24} sm={12} md={8}>
-            <SummaryCard
-              title="Total Claims Processed"
-              value={totalClaims}
-              icon={<FileDoneOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-              color="#1890ff" // Ant Design blue
-            />
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <SummaryCard
-              title="Flagged Claims"
-              value={flaggedClaimsCount}
-              icon={<WarningOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-              color="#f5222d" // Ant Design red
-            />
-          </Col>
-          <Col xs={24} sm={24} md={8}>
-            <SummaryCard
-              title="Fraud Detection Rate"
-              value={`${fraudDetectionRate}%`}
-              icon={<PercentageOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-              color="#52c41a" // Ant Design green
-              trend={{
-                value: '+2.5%',
-                precision: 1,
-                color: '#52c41a', // Green for positive trend
-                prefix: 'up', // 'up' for increase, 'down' for decrease
-                suffix: '',
-              }}
-            />
-          </Col>
-        </Row>
+      <h1>Dashboard</h1>
+
+      {/* User Information Section */}
+      {userInfo && (
+        <div className="user-info-section">
+          <h2>User Information</h2>
+          <div className="user-info">
+            <p><strong>Name:</strong> {userInfo.name}</p>
+            <p><strong>Email:</strong> {userInfo.email}</p>
+            <p><strong>Age:</strong> {userInfo.age}</p>
+            <p><strong>Income:</strong> ${userInfo.income}</p>
+            <p><strong>Employment Status:</strong> {userInfo.employment_status}</p>
+          </div>
+        </div>
       )}
 
-      {/* Flagged Claims Table */}
-      <div className="flagged-claims-section">
-        <h2>Flagged Claims</h2>
-        {claimsLoading ? (
-          <Spin tip="Loading Flagged Claims..." />
-        ) : claimsError ? (
-          <Alert
-            message="Error"
-            description="There was an error fetching the flagged claims."
-            type="error"
-            showIcon
-          />
-        ) : (
-          <Table
-            dataSource={flaggedClaims}
-            columns={columns}
-            rowKey="id"
-            pagination={{ pageSize: 10 }}
-            bordered
-          />
-        )}
-      </div>
+      {/* Graphs Section */}
+      <div className="graphs-section">
+        <div className="graph-card">
+          <h3>Approval Probability Trends</h3>
+          <Line data={defaultRiskChartData} />
+        </div>
 
-      {/* Fraud Trends Bar Chart */}
-      <div className="fraud-trends-section">
-        <h2>Fraud Trends</h2>
-        {trendsLoading ? (
-          <Spin tip="Loading Fraud Trends..." />
-        ) : trendsError ? (
-          <Alert
-            message="Error"
-            description="There was an error fetching the fraud trends data."
-            type="error"
-            showIcon
-          />
-        ) : (
-          <div className="chart-container">
-            <Bar data={chartData} options={chartOptions} />
-          </div>
-        )}
+        <div className="graph-card">
+          <h3>Loan Purpose Distribution</h3>
+          <Pie data={loanPurposeChartData} />
+        </div>
+
+        <div className="graph-card">
+          <h3>Approval Probability Over Time</h3>
+          <Bar data={approvalChartData} />
+        </div>
+
+        <div className="graph-card">
+          <h3>Default Risk Trends</h3>
+          <Line data={defaultRiskChartData} />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Dashboard;

@@ -1,4 +1,5 @@
 // src/components/Sidebar.jsx
+
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
@@ -13,13 +14,13 @@ function Sidebar({ isVisible }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/analytics" className={({ isActive }) => (isActive ? 'active' : undefined)}>
-              Analytics
+            <NavLink to="/apply-loan" className={({ isActive }) => (isActive ? 'active' : undefined)}>
+              Apply for Loan
             </NavLink>
           </li>
           <li>
-            <NavLink to="/claims" className={({ isActive }) => (isActive ? 'active' : undefined)}>
-              Claims
+            <NavLink to="/loan-history" className={({ isActive }) => (isActive ? 'active' : undefined)}>
+              Loan History
             </NavLink>
           </li>
         </ul>

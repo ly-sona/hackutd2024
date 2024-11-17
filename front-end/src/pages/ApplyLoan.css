@@ -1,0 +1,62 @@
+/* src/pages/ApplyLoan.css */
+
+.apply-loan-container {
+    padding: 24px;
+  }
+  
+  .apply-loan-container h1 {
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .apply-loan-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .apply-loan-form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .apply-loan-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .apply-loan-form input:focus {
+    outline: none;
+    border-color: #1abc9c;
+  }
+  
+  .apply-loan-form button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .apply-loan-form button:hover {
+    background-color: #16a085;
+  }
+  
+  .prediction-result {
+    margin-top: 20px;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .apply-loan-container p {
+    color: #333;
+  }  

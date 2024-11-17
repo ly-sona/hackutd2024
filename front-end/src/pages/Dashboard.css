@@ -2,78 +2,59 @@
 
 .dashboard-container {
   padding: 24px;
-  background: transparent; /* Let the main-content's gradient show through */
-  min-height: 100%;
-}
-
-.summary-metrics-row {
-  margin-bottom: 24px;
-}
-
-/* Flagged Claims Section */
-.flagged-claims-section {
-  margin-bottom: 24px;
-}
-
-.flagged-claims-section h2 {
+  background: transparent;
+  min-height: 100vh;
   color: #ffffff;
+}
+
+.dashboard-container h1 {
+  color: #ffffff;
+  margin-bottom: 24px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* User Information Section */
+.user-info-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: rgba(46, 66, 52, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-section h2 {
+  color: #1abc9c;
   margin-bottom: 16px;
 }
 
-/* Fraud Trends Section */
-.fraud-trends-section h2 {
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  margin-bottom: 16px;
+.user-info p {
+  margin: 8px 0;
+  color: #ecf0f1;
 }
 
-.chart-container {
-  width: 100%;
-  height: 400px; /* Fixed height for the chart */
-  background: rgba(255, 255, 255, 0.1); /* Slightly lighter background for contrast */
-  border-radius: 8px;
-  padding: 16px;
-}
-
-/* Responsive Chart Height */
-@media (max-width: 768px) {
-  .chart-container {
-    height: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-  .chart-container {
-    height: 250px;
-  }
-}
-
-/* Table Styling */
-.flagged-claims-section .ant-table {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-}
-
-.flagged-claims-section .ant-table-thead > tr > th {
-  background: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-}
-
-.flagged-claims-section .ant-table-tbody > tr > td {
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-}
-
-/* Loading and Error States */
-.dashboard-container .ant-spin {
+/* Graphs Section */
+.graphs-section {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-.dashboard-container .ant-alert {
-  margin-bottom: 24px;
+.graph-card {
+  flex: 1 1 45%;
+  background-color: rgba(46, 66, 52, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.graph-card h3 {
+  color: #1abc9c;
+  margin-bottom: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .graph-card {
+    flex: 1 1 100%;
+  }
 }

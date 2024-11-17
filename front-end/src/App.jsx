@@ -1,10 +1,11 @@
-// App.jsx
+// src/App.jsx
+
 import { useState, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import throttle from 'lodash.throttle';
 import Dashboard from './pages/Dashboard';
-import Analytics from './pages/Analytics';
-import Claims from './pages/Claims';
+import ApplyLoan from './pages/ApplyLoan';
+import LoanHistory from './pages/LoanHistory';
 import Sidebar from './components/Sidebar';
 import './App.css';
 
@@ -43,7 +44,7 @@ function App() {
           {isSidebarVisible ? '❮' : '❯'}
         </button>
         <div
-          className="main-content"
+          className={`main-content ${isSidebarVisible ? '' : 'full-width'}`}
           ref={mainContentRef}
           onMouseMove={handleMouseMove}
           style={{ background: calculateGradient() }}
@@ -51,8 +52,8 @@ function App() {
           <div className="content-overlay">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/claims" element={<Claims />} />
+              <Route path="/apply-loan" element={<ApplyLoan />} />
+              <Route path="/loan-history" element={<LoanHistory />} />
             </Routes>
           </div>
         </div>

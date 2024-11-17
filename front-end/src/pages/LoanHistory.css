@@ -1,0 +1,39 @@
+/* src/pages/LoanHistory.css */
+
+.loan-history-container {
+    padding: 24px;
+  }
+  
+  .loan-history-container h1 {
+    color: #333;
+    margin-bottom: 24px;
+  }
+  
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .history-table th,
+  .history-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .history-table th {
+    background: #1abc9c;
+    color: #fff;
+  }
+  
+  .history-table tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+  
+  .history-table tr:hover {
+    background: #ecf0f1;
+  }
+  
+  .history-table td {
+    color: #555;
+  }  
