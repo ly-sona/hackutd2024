@@ -1,0 +1,89 @@
+/* Sidebar.css */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200px; /* Sidebar width */
+  background-color: #2c3e50; /* Dark sidebar background */
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transform: translateX(0); /* Default position */
+  transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth slide effect */
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%); /* Slide out of view */
+}
+
+.navbar ul {
+  list-style: none;
+  width: 100%; /* Changed from 200px to 100% */
+  padding: 0;
+  margin: 0; /* Ensure no default margin */
+}
+
+.navbar ul li {
+  margin: 20px 0;
+  width: 100%; /* Changed from 200px to 100% */
+}
+
+.navbar ul li a {
+  display: block; /* Make the anchor a block element */
+  width: 100%; /* Ensure full width */
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 10px 20px;
+  box-sizing: border-box; /* Include padding in the element's total width */
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #34495e;
+  /* Removed width: 200px; */
+}
+
+.navbar ul li a.active {
+  background-color: #1abc9c;
+  color: #ffffff;
+  /* Removed width: 200px; */
+}
+
+/* Toggle Button */
+.toggle-sidebar-btn {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 200px; /* Align with sidebar */
+  transform: translateY(-50%);
+  background-color: #1abc9c;
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0 5px 5px 0; /* Rounded edge on the right */
+  cursor: pointer;
+  z-index: 1000;
+  transition: left 0.5s cubic-bezier(0.4, 0.0, 0.2, 1); /* Slide smoothly */
+}
+
+.sidebar.hidden + .toggle-sidebar-btn {
+  left: 0; /* Align button when sidebar is hidden */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 150px;
+  }
+
+  .toggle-sidebar-btn {
+    left: 150px;
+  }
+
+  .sidebar.hidden + .toggle-sidebar-btn {
+    left: 0;
+  }
+}

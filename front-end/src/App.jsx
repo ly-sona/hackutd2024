@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.jsx
+import { useState, useCallback, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import throttle from 'lodash.throttle';
+import Dashboard from './pages/Dashboard';
+import Analytics from './pages/Analytics';
+import Claims from './pages/Claims';
+import Sidebar from './components/Sidebar';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 });
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const mainContentRef = useRef(null);
+
+  const handleMouseMove = useCallback(
+    throttle((e) => {
+      if (mainContentRef.current) {
+        const rect = mainContentRef.current.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setCursorPos({ x, y });
+      }
+    }, 50),
+    []
+  );
+
+  const calculateGradient = () => {
+    const { x, y } = cursorPos;
+    const lightGreen = 'rgba(123, 156, 133, 0.5)';
+    const darkGreen = 'rgba(46, 66, 52, 0.8)';
+    return `radial-gradient(circle at ${x}% ${y}%, ${lightGreen} 0%, ${darkGreen} 100%)`;
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <Router>
+      <div className="app-container">
+        <Sidebar isVisible={isSidebarVisible} />
+        <button
+          className="toggle-sidebar-btn"
+          onClick={() => setIsSidebarVisible((prev) => !prev)}
+        >
+          {isSidebarVisible ? '❮' : '❯'}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <div
+          className="main-content"
+          ref={mainContentRef}
+          onMouseMove={handleMouseMove}
+          style={{ background: calculateGradient() }}
+        >
+          <div className="content-overlay">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/claims" element={<Claims />} />
+            </Routes>
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
