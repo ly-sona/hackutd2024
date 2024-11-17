@@ -65,7 +65,7 @@ const CusInfo = () => {
 
   return (
     <div className="dashboard-container">
-      <h1>Customer Information</h1>
+      <h1 className="text-lg font-bold">Customer Information</h1>
       {!showDefaultInfo ? (
         <form className="customer-info-form" onSubmit={handleSubmit}>
           {/* Personal Information Section */}
