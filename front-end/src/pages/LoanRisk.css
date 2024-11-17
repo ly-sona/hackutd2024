@@ -1,0 +1,95 @@
+/* General container styling */
+.loan-risk-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  color: #d1c8e6;
+  padding: 20px;
+  background-color: #2b2840;
+  box-sizing: border-box;
+}
+
+.loan-risk-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.risk-score-section {
+  background: #34304a;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+.risk-score-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.risk-score-section p {
+  font-size: 1rem;
+  color: #a9a3c4;
+}
+
+.risk-chart-section {
+  background: #34304a;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+.risk-chart-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.risk-chart-section canvas {
+  max-width: 100%;
+}
+
+.risk-details-section {
+  background: #34304a;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+.risk-details-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.risk-details-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.risk-details-section li {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.risk-details-section strong {
+  color: #7c6fa7;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+  .loan-risk-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .risk-score-section h2,
+  .risk-chart-section h3,
+  .risk-details-section h3 {
+    font-size: 1.3rem;
+  }
+}
