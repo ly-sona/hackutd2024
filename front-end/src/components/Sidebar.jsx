@@ -38,22 +38,22 @@ function Sidebar({ isVisible }) {
       <nav className="navbar">
         <ul>
         <li>
-            <NavLink to="/" end>
+            <NavLink to="/" className="text-lg font-bold" end>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard" end>
+            <NavLink to="/dashboard" className="text-lg font-bold" end>
               Dashboard
             </NavLink>
           </li>
           <li>
-            <NavLink to="/apply-loan">
+            <NavLink to="/apply-loan" className="text-lg font-bold" end>
               Apply for Loan
             </NavLink>
           </li>
           <li>
-            <NavLink to="/loan-history">
+            <NavLink to="/loan-history" className="text-lg font-bold" end>
               Loan History
             </NavLink>
           </li>

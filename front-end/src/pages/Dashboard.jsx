@@ -178,7 +178,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1>Dashboard</h1>
+      <h1 className="text-lg font-bold">Dashboard</h1>
 
       {/* Target Information Section */}
       {targetInfo && (
