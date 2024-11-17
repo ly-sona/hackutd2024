@@ -20,3 +20,4 @@ class ClaimResponse(ClaimBase):
     class Config:
         orm_mode = True
 
+

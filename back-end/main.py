@@ -101,3 +101,4 @@ def fraud_trends(db: Session = Depends(get_db)):
     data = [trend.count for trend in trends]
     return {"labels": labels, "data": data}
 
+
