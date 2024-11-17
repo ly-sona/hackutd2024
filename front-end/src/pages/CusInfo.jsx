@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './CusInfo.css';
+import Tooltip from '../components/Tooltip';
 
 const CusInfo = () => {
   // State variables for personal information
@@ -81,7 +82,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Age Group:
+              <Tooltip
+                term="Age Group"
+                definition="Select the range that includes your current age."
+              />
+              :
               <select
                 value={ageGroup}
                 onChange={(e) => setAgeGroup(e.target.value)}
@@ -97,7 +102,11 @@ const CusInfo = () => {
               </select>
             </label>
             <label>
-              Marital Status:
+              <Tooltip
+                term="Marital Status"
+                definition="Your current legal relationship status."
+              />
+              :
               <select
                 value={maritalStatus}
                 onChange={(e) => setMaritalStatus(e.target.value)}
@@ -111,7 +120,11 @@ const CusInfo = () => {
               </select>
             </label>
             <label>
-              Number of Dependents:
+              <Tooltip
+                term="Number of Dependents"
+                definition="People who rely on you financially, like children."
+              />
+              :
               <input
                 type="number"
                 value={dependents}
@@ -121,7 +134,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Employment Status:
+              <Tooltip
+                term="Employment Status"
+                definition="Your current work situation."
+              />
+              :
               <select
                 value={employmentStatus}
                 onChange={(e) => setEmploymentStatus(e.target.value)}
@@ -136,7 +153,11 @@ const CusInfo = () => {
               </select>
             </label>
             <label>
-              Household Income Bracket:
+              <Tooltip
+                term="Household Income Bracket"
+                definition="Your total annual income before taxes."
+              />
+              :
               <select
                 value={incomeBracket}
                 onChange={(e) => setIncomeBracket(e.target.value)}
@@ -151,7 +172,11 @@ const CusInfo = () => {
               </select>
             </label>
             <label>
-              Approximate Savings Amount:
+              <Tooltip
+                term="Approximate Savings Amount"
+                definition="The total money you have saved."
+              />
+              :
               <input
                 type="number"
                 value={savingsAmount}
@@ -166,7 +191,11 @@ const CusInfo = () => {
           <div className="form-section">
             <h2>Monthly Expenses</h2>
             <label>
-              Rent/Mortgage:
+              <Tooltip
+                term="Rent/Mortgage"
+                definition="Your monthly payment for housing."
+              />
+              :
               <input
                 type="number"
                 value={monthlyRent}
@@ -176,7 +205,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Utilities:
+              <Tooltip
+                term="Utilities"
+                definition="Monthly costs for services like electricity and water."
+              />
+              :
               <input
                 type="number"
                 value={monthlyUtilities}
@@ -186,7 +219,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Insurance:
+              <Tooltip
+                term="Insurance"
+                definition="Monthly payments for insurance policies."
+              />
+              :
               <input
                 type="number"
                 value={monthlyInsurance}
@@ -196,7 +233,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Loan Payments:
+              <Tooltip
+                term="Loan Payments"
+                definition="Monthly payments towards any existing loans."
+              />
+              :
               <input
                 type="number"
                 value={monthlyLoanPayments}
@@ -206,7 +247,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Subscriptions:
+              <Tooltip
+                term="Subscriptions"
+                definition="Monthly costs for services like streaming or gym memberships."
+              />
+              :
               <input
                 type="number"
                 value={monthlySubscriptions}
@@ -216,7 +261,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Food Costs:
+              <Tooltip
+                term="Food Costs"
+                definition="Monthly expenses on groceries and dining out."
+              />
+              :
               <input
                 type="number"
                 value={monthlyFoodCosts}
@@ -226,7 +275,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Miscellaneous Costs:
+              <Tooltip
+                term="Miscellaneous Costs"
+                definition="Other monthly expenses not listed above."
+              />
+              :
               <input
                 type="number"
                 value={monthlyMiscCosts}
@@ -241,7 +294,11 @@ const CusInfo = () => {
           <div className="form-section">
             <h2>Loan Details</h2>
             <label>
-              Desired Loan Amount:
+              <Tooltip
+                term="Desired Loan Amount"
+                definition="The amount of money you wish to borrow."
+              />
+              :
               <input
                 type="number"
                 value={desiredLoanAmount}
@@ -251,7 +308,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Desired Loan APR (%):
+              <Tooltip
+                term="Desired Loan APR (%)"
+                definition="The annual interest rate for the loan."
+              />
+              :
               <input
                 type="number"
                 value={desiredLoanAPR}
@@ -262,7 +323,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Desired Loan Period (months):
+              <Tooltip
+                term="Desired Loan Period (months)"
+                definition="How long you want to take to repay the loan."
+              />
+              :
               <input
                 type="number"
                 value={desiredLoanPeriod}
@@ -272,7 +337,11 @@ const CusInfo = () => {
               />
             </label>
             <label>
-              Has the loan already been approved?
+              <Tooltip
+                term="Loan Approved"
+                definition="Has your loan application been accepted?"
+              />
+              :
               <select
                 value={loanApproved}
                 onChange={(e) => setLoanApproved(e.target.value)}
