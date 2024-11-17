@@ -1,4 +1,4 @@
-# schemas.py
+# insurewise_backend/schemas.py
 
 from pydantic import BaseModel
 from typing import Optional
@@ -19,6 +19,8 @@ class ClaimResponse(ClaimBase):
     anomaly_score: float
     fraud: bool
     created_at: Optional[str]
+    ipfs_hash: Optional[str] = None
+    ipfs_url: Optional[str] = None
 
     class Config:
         orm_mode = True

@@ -87,5 +87,14 @@ def upload_claim_file(claim_id: int, file: UploadFile = File(...), db: Session =
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# insurewise_backend/main.py (excerpt)
+
+from models import Base
+from database import engine
+
+# Create all tables in the database. This is equivalent to "Create Table" statements in raw SQL.
+Base.metadata.create_all(bind=engine)
+
+
 # Existing endpoints remain unchanged
 # ...

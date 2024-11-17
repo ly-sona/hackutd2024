@@ -1,4 +1,4 @@
-# models.py
+# insurewise_backend/models.py
 
 from sqlalchemy import Column, Integer, Float, Boolean, DateTime, String
 from sqlalchemy.ext.declarative import declarative_base
