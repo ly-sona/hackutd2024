@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import throttle from 'lodash.throttle';
 import anime from 'animejs';
-import Dashboard from './pages/Dashboard';
+import CusInfo from './pages/CusInfo';
 import Home from './pages/Home';
-import ApplyLoan from './pages/ApplyLoan';
-import LoanHistory from './pages/LoanHistory';
+import LoanRisk from './pages/LoanRisk';
+import Default from './pages/Default';
 import Sidebar from './components/Sidebar';
 import SplashScreen from './components/SplashScreen';
 import './App.css';
@@ -81,9 +81,9 @@ function App() {
           <div className="content-overlay">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/apply-loan" element={<ApplyLoan />} />
-              <Route path="/loan-history" element={<LoanHistory />} />
+              <Route path="/CusInfo" element={<CusInfo />} />
+              <Route path="/apply-loan" element={<LoanRisk />} />
+              <Route path="/default" element={<Default />} />
             </Routes>
           </div>
         </div>

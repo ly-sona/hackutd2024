@@ -43,18 +43,18 @@ function Sidebar({ isVisible }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard" className="text-lg font-bold" end>
-              Dashboard
+            <NavLink to="/CusInfo" className="text-lg font-bold" end>
+              Customer Information
             </NavLink>
           </li>
           <li>
             <NavLink to="/apply-loan" className="text-lg font-bold" end>
-              Apply for Loan
+            Loan Approval Risk
             </NavLink>
           </li>
           <li>
-            <NavLink to="/loan-history" className="text-lg font-bold" end>
-              Loan History
+            <NavLink to="/default" className="text-lg font-bold" end>
+            Default Risk
             </NavLink>
           </li>
         </ul>
