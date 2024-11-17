@@ -1,12 +1,11 @@
 /* src/App.css */
 
-/* Ensure that the root element takes up the full viewport */
 #root {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent unwanted scrollbars */
+  overflow: hidden;
 }
 
 .app-container {
@@ -15,28 +14,21 @@
   height: 100%;
 }
 
-/* Main content area */
 .main-content {
-  flex: 1; /* Take up the remaining space */
-  margin-left: 200px; /* Width of the sidebar */
+  flex: 1;
+  margin-left: 200px;
   padding: 20px;
-  overflow-y: auto; /* Allow vertical scrolling if content overflows */
-  box-sizing: border-box; /* Ensure padding doesn't affect total width */
-  transition: background 0.5s ease; /* Smooth transition for background changes */
-  position: relative; /* To position overlay if needed */
-  background: radial-gradient(circle at 50% 50%, rgba(123, 156, 133, 0.5) 0%, rgba(46, 66, 52, 0.8) 60%); /* Initial gradient */
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
 }
 
-/* Overlay for content to enhance text readability */
 .content-overlay {
   position: relative;
-  z-index: 1; /* Ensure content is above the overlay */
-  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark overlay */
+  z-index: 1;
   padding: 20px;
-  border-radius: 8px;
 }
 
-/* Remove or adjust the existing .main-content::before overlay if using this method */
 .main-content::before {
   content: '';
   position: absolute;
@@ -44,12 +36,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: none; /* Disable the previous overlay */
+  background: none;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Text Styling for Readability */
 .main-content h1,
 .main-content p,
 .main-content div {
@@ -57,7 +48,6 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .sidebar {
     width: 150px;
