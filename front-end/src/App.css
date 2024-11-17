@@ -5,13 +5,11 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: #1a1a2e;
   color: #eaeaea;
-  overflow: hidden;
 }
 
 .app-container {
   display: flex;
   height: 100vh;
-  position: relative;
 }
 
 .main-content {
@@ -19,8 +17,7 @@ body {
   padding: 20px;
   overflow-y: auto;
   transition: margin-left 0.3s ease;
-  position: relative;
-  z-index: 1;
+  background-color: #1a1a2e;
 }
 
 .main-content.full-width {
@@ -28,7 +25,7 @@ body {
 }
 
 .main-content:not(.full-width) {
-  margin-left: 250px; /* Sidebar width */
+  margin-left: 250px; /* Updated sidebar width */
 }
 
 .content-overlay {
@@ -51,49 +48,30 @@ div {
 .toggle-sidebar-btn {
   position: fixed;
   top: 20px;
-  left: 260px;
+  left: 250px;
   background-color: #6a1b9a;
   color: #ffffff;
   padding: 10px;
   border: none;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  z-index: 4;
-  transition: left 0.3s ease, transform 0.3s ease;
-}
-
-.toggle-sidebar-btn:hover {
-  transform: scale(1.1);
+  z-index: 1000;
+  transition: left 0.3s ease;
 }
 
 .sidebar.hidden + .toggle-sidebar-btn {
-  left: 10px;
-}
-.sidebar {
-  position: relative;
-  z-index: 2; /* Sidebar above main content */
-}
-
-/* Adjust Three.js canvas */
-.three-background {
-  position: fixed;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
+/* Cursor */
+
+body {
+  cursor: url('/src/assets/cursor-default.cur'), auto;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #6a1b9a;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a2e;
+a:hover,
+button:hover,
+.graph-card:hover,
+.section:hover {
+  cursor: url('/src/assets/cursor-pointer.cur'), pointer;
 }

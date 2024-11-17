@@ -1,3 +1,5 @@
+/* src/pages/Dashboard.css */
+
 .dashboard-container {
   padding: 24px;
   min-height: 100vh;
@@ -8,55 +10,44 @@
   margin-bottom: 24px;
 }
 
-.grid-container {
+.target-info-section,
+.user-info-section,
+.credit-history-section,
+.loan-details-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #202040;
+  border-radius: 8px;
+}
+
+.target-info-section h2,
+.user-info-section h2,
+.credit-history-section h2,
+.loan-details-section h2 {
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.user-info p,
+.credit-history-section p,
+.loan-details-section p {
+  margin: 8px 0;
+  color: #cccccc;
+}
+
+.graphs-section {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
 }
 
-.left-column,
-.right-column {
-  flex: 1;
-  min-width: 300px;
-}
-
-.section {
-  margin-bottom: 24px;
-  padding: 20px;
-  background-color: #3a007d;
-  border-radius: 8px;
-  opacity: 0; /* For animation */
-  transform: translateY(50px); /* For animation */
-}
-
-.section h2 {
-  color: #ffffff;
-  margin-bottom: 16px;
-}
-
-.section p,
-.section li {
-  color: #cccccc;
-  margin: 8px 0;
-}
-
-.section ul {
-  list-style: none;
-  padding: 0;
-}
-
-.graphs-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 .graph-card {
-  background-color: #3a007d;
+  flex: 1 1 45%;
+  background-color: #202040;
   padding: 20px;
   border-radius: 8px;
-  opacity: 0; /* For animation */
-  transform: translateY(50px); /* For animation */
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(50px); /* Start position for animation */
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -70,13 +61,9 @@
   transform: translateY(-10px);
 }
 
-.section:hover {
-  transform: translateY(-10px);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
-  .grid-container {
-    flex-direction: column;
+  .graph-card {
+    flex: 1 1 100%;
   }
 }
