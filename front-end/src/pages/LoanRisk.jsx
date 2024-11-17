@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './LoanRisk.css';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip as ChartTooltip, Legend } from 'chart.js';
@@ -9,15 +9,12 @@ Chart.register(ArcElement, ChartTooltip, Legend);
 
 const LoanRisk = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // For redirection in case of missing data
   const { approval_probability, default_risk, customerData } = location.state || {};
 
-  // Check if prediction data is available
-  if (
-    approval_probability === undefined ||
-    default_risk === undefined ||
-    !customerData
-  ) {
-    return <div>No prediction data available.</div>;
+  // Redirect to a fallback page if data is missing
+  if (!approval_probability || !default_risk || !customerData) {
+    return <div>No prediction data available. Please provide the required information.</div>;
   }
 
   // Destructure data from customerData
@@ -55,29 +52,22 @@ const LoanRisk = () => {
   const calculateRiskScore = () => {
     let score = 50; // Base score
 
-    // Adjust score based on age group
     if (ageGroup === '18-25') score += 5;
     if (ageGroup === '66+') score += 10;
 
-    // Adjust score based on employment status
     if (employmentStatus === 'Unemployed') score += 20;
     if (employmentStatus === 'Self-Employed') score += 10;
 
-    // Adjust score based on income bracket
     if (incomeBracket === '<$25,000') score += 20;
     if (incomeBracket === '>$100,000') score -= 10;
 
-    // Adjust score based on savings amount
     if (savingsAmount < 5000) score += 10;
     if (savingsAmount > 50000) score -= 10;
 
-    // Adjust score based on monthly expenses
     if (totalMonthlyExpenses > 2000) score += 10;
 
-    // Adjust score based on desired loan amount
     if (desiredLoanAmount > 50000) score += 15;
 
-    // Ensure score is between 0 and 100
     score = Math.max(0, Math.min(100, score));
 
     return score.toFixed(2);
@@ -85,7 +75,6 @@ const LoanRisk = () => {
 
   const riskScore = calculateRiskScore();
 
-  // Risk breakdown for the pie chart
   const riskBreakdown = {
     Age: ageGroup === '18-25' || ageGroup === '66+' ? 20 : 10,
     Employment:
@@ -100,7 +89,6 @@ const LoanRisk = () => {
     LoanAmount: desiredLoanAmount > 50000 ? 30 : 10,
   };
 
-  // Prepare data for the pie chart
   const pieData = {
     labels: Object.keys(riskBreakdown),
     datasets: [
@@ -125,9 +113,8 @@ const LoanRisk = () => {
         <h2>Your Approval Probability: {(approval_probability * 100).toFixed(2)}%</h2>
         <h2>Your Default Risk: {(default_risk * 100).toFixed(2)}%</h2>
         <p>
-          A lower default risk indicates a lower risk of defaulting on the loan.
-          Approval probability and default risk are calculated based on your provided
-          information.
+          A lower default risk indicates a lower chance of defaulting on the loan.
+          Approval probability and default risk are calculated based on your provided information.
         </p>
       </div>
       <div className="risk-chart-section">

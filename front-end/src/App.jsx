@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import throttle from 'lodash.throttle';
@@ -32,10 +30,10 @@ function App() {
             duration: 1000,
             easing: 'easeInOutQuad',
             complete: () => {
-              setIsSplashVisible(false); // Ensure this is called
+              setIsSplashVisible(false);
             },
           });
-        }, 2000); // Display logo for 2 seconds
+        }, 2000);
       },
     });
   }, []);
@@ -83,7 +81,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/CusInfo" element={<CusInfo />} />
               <Route path="/default" element={<Default />} />
-              <Route path="/apply-loan" render={(props) => <LoanRisk {...props.location.state} />} />
+              <Route path="/loan-risk" element={<LoanRisk />} />
             </Routes>
           </div>
         </div>

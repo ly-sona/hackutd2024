@@ -48,24 +48,25 @@ const CusInfo = () => {
       number_of_dependents: parseInt(formData.dependents, 10) || 0,
       employment_status: formData.employmentStatus,
       household_income_bracket: formData.incomeBracket,
-      approximate_savings_amount: parseFloat(formData.savingsAmount) || 0,
-      monthly_rent_mortgage: parseFloat(formData.monthlyRent) || 0,
-      monthly_utilities: parseFloat(formData.monthlyUtilities) || 0,
-      monthly_insurance: parseFloat(formData.monthlyInsurance) || 0,
-      monthly_loan_payments: parseFloat(formData.monthlyLoanPayments) || 0,
-      monthly_subscriptions: parseFloat(formData.monthlySubscriptions) || 0,
-      monthly_food_costs: parseFloat(formData.monthlyFoodCosts) || 0,
-      monthly_misc_costs: parseFloat(formData.monthlyMiscCosts) || 0,
-      desired_loan_amount: parseFloat(formData.desiredLoanAmount) || 0,
-      desired_loan_apr: parseFloat(formData.desiredLoanAPR) || 0,
+      approximate_savings_amount: parseFloat(formData.savingsAmount) || 0.0,
+      monthly_rent_mortgage: parseFloat(formData.monthlyRent) || 0.0,
+      monthly_utilities: parseFloat(formData.monthlyUtilities) || 0.0,
+      monthly_insurance: parseFloat(formData.monthlyInsurance) || 0.0,
+      monthly_loan_payments: parseFloat(formData.monthlyLoanPayments) || 0.0,
+      monthly_subscriptions: parseFloat(formData.monthlySubscriptions) || 0.0,
+      monthly_food_costs: parseFloat(formData.monthlyFoodCosts) || 0.0,
+      monthly_misc_costs: parseFloat(formData.monthlyMiscCosts) || 0.0,
+      desired_loan_amount: parseFloat(formData.desiredLoanAmount) || 0.0,
+      desired_loan_apr: parseFloat(formData.desiredLoanAPR) || 0.0,
       desired_loan_period: parseInt(formData.desiredLoanPeriod, 10) || 0,
-    };
+      created_at: new Date().toISOString(), // Optional: If backend expects a timestamp
+    };    
   
     try {
       const response = await axios.post(`${API_BASE_URL}/predict`, payload);
       const { approval_probability, default_risk } = response.data;
   
-      navigate('/LoanRisk', { state: { approval_probability, default_risk, customerData: payload } });
+      navigate('/loan-risk', { state: { approval_probability, default_risk, customerData: payload } });
     } catch (error) {
       console.error('Error submitting data:', error);
       alert('An error occurred while submitting your information. Please try again.');
