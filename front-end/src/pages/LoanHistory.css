@@ -1,39 +1,218 @@
 /* src/pages/LoanHistory.css */
 
 .loan-history-container {
-    padding: 24px;
-  }
-  
-  .loan-history-container h1 {
-    color: #333;
-    margin-bottom: 24px;
-  }
-  
-  .history-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .history-table th,
-  .history-table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: left;
-  }
-  
-  .history-table th {
-    background: #1abc9c;
-    color: #fff;
-  }
-  
-  .history-table tr:nth-child(even) {
-    background: #f9f9f9;
-  }
-  
-  .history-table tr:hover {
-    background: #ecf0f1;
-  }
-  
-  .history-table td {
-    color: #555;
-  }  
+  padding: 24px;
+  background-color: #1a1a2e; /* Dark background */
+  color: #e0e0e0; /* Light text for contrast */
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.loan-history-container h1 {
+  color: #9b59b6; /* Pale purple for title */
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+/* Overview Section */
+.overview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.total-loan-amount {
+  background: #2c2c54;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.total-loan-amount h2 {
+  color: #9b59b6;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.total-loan-amount p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+/* Analyze button */
+button.analyze-btn {
+  background: #9b59b6;
+  color: #fff;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+button.analyze-btn:hover {
+  background: #8e44ad;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Loading and Error Messages */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+/* Responsive and flexible layout */
+.flex-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.flex-layout > div {
+  flex: 1;
+  background: #121212;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Graph container */
+.graph-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  background: linear-gradient(135deg, #2c2c54, #1a1a2e); /* Dark purple gradient */
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.graph-placeholder {
+  color: #9b59b6;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px dashed #9b59b6;
+  border-radius: 10px;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Table container */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Table styles */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table thead {
+  background-color: #9b59b6; /* Pale purple for table headers */
+  color: #fff;
+}
+
+.history-table th,
+.history-table td {
+  padding: 14px;
+  font-size: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #2c2c54;
+}
+
+.history-table tr:nth-child(even) {
+  background-color: #1e1e30; /* Darker grey for zebra striping */
+}
+
+.history-table tr:hover {
+  background-color: #343450; /* Highlight on hover */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.history-table td {
+  color: #e0e0e0;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 26, 46, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #121212;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+}
+
+.modal-content h2 {
+  color: #9b59b6;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.close-modal-btn {
+  background: #9b59b6;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  float: right;
+}
+
+.close-modal-btn:hover {
+  background: #8e44ad;
+}
+
+/* Scrollbar Styling */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #9b59b6;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #8e44ad;
+}
