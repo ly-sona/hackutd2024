@@ -22,27 +22,35 @@
 
 .navbar ul {
   list-style: none;
+  width: 100%; /* Changed from 200px to 100% */
   padding: 0;
+  margin: 0; /* Ensure no default margin */
 }
 
 .navbar ul li {
   margin: 20px 0;
+  width: 100%; /* Changed from 200px to 100% */
 }
 
 .navbar ul li a {
+  display: block; /* Make the anchor a block element */
+  width: 100%; /* Ensure full width */
   color: #ecf0f1;
   text-decoration: none;
   padding: 10px 20px;
+  box-sizing: border-box; /* Include padding in the element's total width */
   transition: background 0.3s ease, color 0.3s ease;
 }
 
 .navbar ul li a:hover {
   background-color: #34495e;
+  /* Removed width: 200px; */
 }
 
 .navbar ul li a.active {
   background-color: #1abc9c;
   color: #ffffff;
+  /* Removed width: 200px; */
 }
 
 /* Toggle Button */
