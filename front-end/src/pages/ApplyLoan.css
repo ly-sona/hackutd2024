@@ -2,19 +2,19 @@
 .apply-loan-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
   background: linear-gradient(135deg, #201e2b, #3b344b);
   font-family: 'Arial', sans-serif;
   color: #d1c8e6;
-  padding: 10px; /* For responsiveness on smaller devices */
+  padding: 20px;
   box-sizing: border-box;
 }
 
 /* Loan box styling */
 .loan-box {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   background: #2b2840;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -29,30 +29,34 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Input section styling */
-.loan-input-section {
-  flex: 1 1 100%;
-  margin-bottom: 20px;
+/* Customer data and loan data sections */
+.customer-data-section,
+.loan-data-section {
   background: #34304a;
   border-radius: 10px;
   padding: 20px;
+  margin-bottom: 20px;
 }
 
-.loan-input-section h2 {
+.customer-data-section h2,
+.loan-data-section h2 {
   margin-bottom: 15px;
   font-size: 1.8rem;
   color: #d1c8e6;
 }
 
-.loan-input-section label {
+.customer-data-section label,
+.loan-data-section label {
   font-size: 1rem;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
-.loan-input-section input {
+.customer-data-section input,
+.loan-data-section input {
   width: 100%;
   padding: 12px;
+  margin-bottom: 15px;
   border: 2px solid #514b67;
   border-radius: 8px;
   background: #2b2840;
@@ -61,58 +65,17 @@
   transition: border-color 0.3s ease;
 }
 
-.loan-input-section input:focus {
+.customer-data-section input:focus,
+.loan-data-section input:focus {
   outline: none;
   border-color: #7c6fa7;
 }
 
-.min-amount {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: #a9a3c4;
-}
-
-/* Terms section styling */
-.terms-section {
-  flex: 1 1 100%;
-  background: #2b2840;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.terms-section h3 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  color: #d1c8e6;
-}
-
-.terms-section p {
-  margin: 8px 0;
-  font-size: 1rem;
-  color: #a9a3c4;
-}
-
-/* Checkbox container */
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.checkbox-container input {
-  margin-right: 10px;
-}
-
-.checkbox-container label {
-  font-size: 0.9rem;
-}
-
-/* Button styling */
+/* Submit button styling */
 .submit-button {
   display: block;
-  margin-top: 20px;
-  width: 100%;
-  padding: 12px;
+  margin: 0 auto;
+  padding: 12px 20px;
   background: #7c6fa7;
   color: #fff;
   border: none;
@@ -122,28 +85,52 @@
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.submit-button:hover:not(.disabled) {
+.submit-button:hover {
   background: #9e8fc8;
   transform: translateY(-2px);
 }
 
-.submit-button.disabled {
-  background: #514b67;
-  cursor: not-allowed;
+/* Risk score section styling */
+.risk-score-section {
+  margin-top: 30px;
+  background: #2b2840;
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
 }
 
-.submit-button:disabled:hover {
-  transform: none;
+.risk-score-section h2,
+.risk-score-section h3 {
+  color: #d1c8e6;
+  margin-bottom: 15px;
 }
 
-/* Responsive styling for smaller screens */
+.risk-score-section p {
+  color: #a9a3c4;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.risk-score-section canvas {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+/* Responsive styling */
 @media (max-width: 600px) {
-  .loan-box {
-    flex-direction: column;
+  .loan-box,
+  .risk-score-section {
+    padding: 15px;
   }
 
-  .loan-input-section, .terms-section {
-    flex: 1 1 100%;
-    margin-bottom: 10px;
+  .customer-data-section,
+  .loan-data-section {
+    padding: 15px;
+  }
+
+  .customer-data-section h2,
+  .loan-data-section h2 {
+    font-size: 1.5rem;
   }
 }
