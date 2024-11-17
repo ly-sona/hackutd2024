@@ -1,16 +1,13 @@
-// src/components/LoanDetails.js
+// src/components/LoanDetails.jsx
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import UploadLoanFile from './UploadLoanFile';
 
 const LoanDetails = ({ loanId }) => {
   const [loanDetails, setLoanDetails] = useState({});
-  const [ipfsUrl, setIpfsUrl] = useState('');
 
   useEffect(() => {
     fetchLoanDetails();
-    fetchLoanFile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loanId]);
 
@@ -23,38 +20,49 @@ const LoanDetails = ({ loanId }) => {
     }
   };
 
-  const fetchLoanFile = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8000/loan_applications/${loanId}/file`);
-      if (response.data.ipfs_url) {
-        setIpfsUrl(response.data.ipfs_url);
-      }
-    } catch (error) {
-      console.error('Error fetching loan file:', error);
-    }
-  };
-
-  const handleUploadSuccess = (data) => {
-    setIpfsUrl(data.ipfs_url);
-  };
-
   return (
     <div className="loan-details-container">
       <h3>Loan Details for Application ID: {loanId}</h3>
-      <p><strong>Applicant Name:</strong> {loanDetails.applicant_name}</p>
-      <p><strong>Credit Score:</strong> {loanDetails.credit_score}</p>
-      <p><strong>Loan Amount:</strong> {loanDetails.loan_amount}</p>
-      <p><strong>Approval Probability:</strong> {(loanDetails.approval_probability * 100).toFixed(2)}%</p>
-      <p><strong>Default Risk:</strong> {(loanDetails.default_risk * 100).toFixed(2)}%</p>
-      <h3>Uploaded Documents</h3>
-      {ipfsUrl ? (
-        <a href={ipfsUrl} target="_blank" rel="noopener noreferrer">
-          View Document
-        </a>
-      ) : (
-        <p>No document uploaded.</p>
-      )}
-      <UploadLoanFile loanId={loanId} onUploadSuccess={handleUploadSuccess} />
+      <p>
+        <strong>Applicant Name:</strong> {loanDetails.name || 'N/A'}
+      </p>
+      <p>
+        <strong>Credit Score:</strong> {loanDetails.credit_score || 'N/A'}
+      </p>
+      <p>
+        <strong>Loan Amount:</strong> {loanDetails.desired_loan_amount || 'N/A'}
+      </p>
+      <p>
+        <strong>Approval Probability:</strong>{' '}
+        {loanDetails.prediction !== undefined
+          ? `${(loanDetails.prediction * 100).toFixed(2)}%`
+          : 'N/A'}
+      </p>
+      <p>
+        <strong>Default Risk:</strong>{' '}
+        {loanDetails.default_risk !== undefined
+          ? `${(loanDetails.default_risk * 100).toFixed(2)}%`
+          : 'N/A'}
+      </p>
+      <p>
+        <strong>Annual Income:</strong> {loanDetails.annual_income || 'N/A'}
+      </p>
+      <p>
+        <strong>Debt-to-Income Ratio:</strong>{' '}
+        {loanDetails.debt_to_income_ratio || 'N/A'}
+      </p>
+      <p>
+        <strong>Employment Status:</strong> {loanDetails.employment_status || 'N/A'}
+      </p>
+      <p>
+        <strong>Loan Purpose:</strong> {loanDetails.loan_purpose || 'N/A'}
+      </p>
+      <p>
+        <strong>Loan Term:</strong> {loanDetails.loan_term || 'N/A'}
+      </p>
+      <p>
+        <strong>Application Status:</strong> {loanDetails.application_status || 'N/A'}
+      </p>
     </div>
   );
 };
