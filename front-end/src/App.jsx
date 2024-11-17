@@ -82,8 +82,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/CusInfo" element={<CusInfo />} />
-              <Route path="/apply-loan" element={<LoanRisk />} />
               <Route path="/default" element={<Default />} />
+              <Route path="/apply-loan" render={(props) => <LoanRisk {...props.location.state} />} />
             </Routes>
           </div>
         </div>

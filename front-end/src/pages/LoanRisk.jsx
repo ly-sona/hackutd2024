@@ -1,203 +1,132 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './LoanRisk.css';
-import { Bar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
-const LoanRisk = () => {
-  // State for customer data
-  const [customerData, setCustomerData] = useState({
-    name: '',
-    age: '',
-    income: '',
-    employmentStatus: '',
-    creditScore: '',
-  });
+const LoanRisk = ({ customerData }) => {
+  // Destructure data from props
+  const {
+    name,
+    ageGroup,
+    maritalStatus,
+    dependents,
+    employmentStatus,
+    incomeBracket,
+    savingsAmount,
+    monthlyExpenses,
+    desiredLoanAmount,
+    desiredLoanAPR,
+    desiredLoanPeriod,
+  } = customerData;
 
-  // State for loan data
-  const [loanData, setLoanData] = useState({
-    amount: '',
-    term: '',
-    interestRate: '',
-  });
+  // Mock risk score calculation based on provided data
+  const calculateRiskScore = () => {
+    let score = 50; // Base score
 
-  // State for risk score and breakdown
-  const [riskScore, setRiskScore] = useState(null);
-  const [riskBreakdown, setRiskBreakdown] = useState(null);
+    // Adjust score based on age group
+    if (ageGroup === '18-25') score += 5;
+    if (ageGroup === '66+') score += 10;
 
-  // Handle input changes
-  const handleCustomerDataChange = (e) => {
-    const { name, value } = e.target;
-    setCustomerData((prevData) => ({ ...prevData, [name]: value }));
-  };
+    // Adjust score based on employment status
+    if (employmentStatus === 'Unemployed') score += 20;
+    if (employmentStatus === 'Self-Employed') score += 10;
 
-  const handleLoanDataChange = (e) => {
-    const { name, value } = e.target;
-    setLoanData((prevData) => ({ ...prevData, [name]: value }));
-  };
+    // Adjust score based on income bracket
+    if (incomeBracket === '<$25,000') score += 20;
+    if (incomeBracket === '>$100,000') score -= 10;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    // Adjust score based on savings amount
+    if (savingsAmount < 5000) score += 10;
+    if (savingsAmount > 50000) score -= 10;
 
-    // Mock risk score calculation
-    const score = calculateRiskScore(customerData, loanData);
-    const breakdown = getRiskBreakdown(customerData, loanData);
+    // Adjust score based on monthly expenses
+    const totalMonthlyExpenses = Object.values(monthlyExpenses).reduce(
+      (acc, expense) => acc + parseFloat(expense || 0),
+      0
+    );
+    if (totalMonthlyExpenses > 2000) score += 10;
 
-    setRiskScore(score);
-    setRiskBreakdown(breakdown);
-  };
+    // Adjust score based on desired loan amount
+    if (desiredLoanAmount > 50000) score += 15;
 
-  const calculateRiskScore = (customerData, loanData) => {
-    // Mock calculation logic
-    let score = 0;
-
-    // Simple mock logic
-    score += customerData.creditScore ? parseInt(customerData.creditScore) / 10 : 0;
-    score += customerData.income ? parseInt(customerData.income) / 10000 : 0;
-    score -= loanData.amount ? parseInt(loanData.amount) / 10000 : 0;
-
-    // Normalize score between 0 and 100
+    // Ensure score is between 0 and 100
     score = Math.max(0, Math.min(100, score));
 
     return score.toFixed(2);
   };
 
-  const getRiskBreakdown = (customerData, loanData) => {
-    // Mock breakdown
-    return {
-      creditScoreImpact: customerData.creditScore ? (parseInt(customerData.creditScore) / 850) * 100 : 0,
-      incomeImpact: customerData.income ? (parseInt(customerData.income) / 100000) * 100 : 0,
-      loanAmountImpact: loanData.amount ? (parseInt(loanData.amount) / 100000) * 100 : 0,
-    };
+  const riskScore = calculateRiskScore();
+
+  // Risk breakdown for the pie chart
+  const riskBreakdown = {
+    Age: ageGroup === '18-25' || ageGroup === '66+' ? 20 : 10,
+    Employment:
+      employmentStatus === 'Unemployed'
+        ? 30
+        : employmentStatus === 'Self-Employed'
+        ? 20
+        : 10,
+    Income: incomeBracket === '<$25,000' ? 30 : 10,
+    Savings: savingsAmount < 5000 ? 20 : 10,
+    Expenses: totalMonthlyExpenses > 2000 ? 20 : 10,
+    LoanAmount: desiredLoanAmount > 50000 ? 30 : 10,
   };
 
-  // Prepare data for charts
-  const riskData = {
-    labels: ['Credit Score', 'Income', 'Loan Amount'],
+  // Prepare data for the pie chart
+  const pieData = {
+    labels: Object.keys(riskBreakdown),
     datasets: [
       {
-        label: 'Risk Factor Impact (%)',
-        data: riskBreakdown
-          ? [
-              riskBreakdown.creditScoreImpact,
-              riskBreakdown.incomeImpact,
-              riskBreakdown.loanAmountImpact,
-            ]
-          : [0, 0, 0],
-        backgroundColor: ['#7c6fa7', '#9e8fc8', '#514b67'],
+        data: Object.values(riskBreakdown),
+        backgroundColor: [
+          '#7c6fa7',
+          '#9e8fc8',
+          '#514b67',
+          '#a9a3c4',
+          '#d1c8e6',
+          '#34304a',
+        ],
       },
     ],
   };
 
   return (
-    <div className="apply-loan-container">
-      <form className="loan-box" onSubmit={handleSubmit}>
-        {/* Customer Data Section */}
-        <div className="customer-data-section">
-          <h2>Customer Information</h2>
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            value={customerData.name}
-            onChange={handleCustomerDataChange}
-            placeholder="Enter your name"
-          />
-
-          <label htmlFor="age">Age</label>
-          <input
-            id="age"
-            name="age"
-            type="number"
-            value={customerData.age}
-            onChange={handleCustomerDataChange}
-            placeholder="Enter your age"
-          />
-
-          <label htmlFor="income">Annual Income ($)</label>
-          <input
-            id="income"
-            name="income"
-            type="number"
-            value={customerData.income}
-            onChange={handleCustomerDataChange}
-            placeholder="Enter your annual income"
-          />
-
-          <label htmlFor="employmentStatus">Employment Status</label>
-          <input
-            id="employmentStatus"
-            name="employmentStatus"
-            type="text"
-            value={customerData.employmentStatus}
-            onChange={handleCustomerDataChange}
-            placeholder="Enter your employment status"
-          />
-
-          <label htmlFor="creditScore">Credit Score</label>
-          <input
-            id="creditScore"
-            name="creditScore"
-            type="number"
-            value={customerData.creditScore}
-            onChange={handleCustomerDataChange}
-            placeholder="Enter your credit score"
-            min="300"
-            max="850"
-          />
-        </div>
-
-        {/* Loan Data Section */}
-        <div className="loan-data-section">
-          <h2>Preferred Loan Information</h2>
-          <label htmlFor="amount">Loan Amount ($)</label>
-          <input
-            id="amount"
-            name="amount"
-            type="number"
-            value={loanData.amount}
-            onChange={handleLoanDataChange}
-            placeholder="Enter loan amount"
-          />
-
-          <label htmlFor="term">Loan Term (years)</label>
-          <input
-            id="term"
-            name="term"
-            type="number"
-            value={loanData.term}
-            onChange={handleLoanDataChange}
-            placeholder="Enter loan term in years"
-          />
-
-          <label htmlFor="interestRate">Interest Rate (%)</label>
-          <input
-            id="interestRate"
-            name="interestRate"
-            type="number"
-            value={loanData.interestRate}
-            onChange={handleLoanDataChange}
-            placeholder="Enter interest rate"
-          />
-        </div>
-
-        <button type="submit" className="submit-button">
-          Calculate Risk Score
-        </button>
-      </form>
-
-      {riskScore && (
-        <div className="risk-score-section">
-          <h2>Predicted Risk Score</h2>
-          <p>
-            Your predicted risk score is: <strong>{riskScore}</strong>
-          </p>
-
-          <h3>Risk Breakdown</h3>
-          <Bar data={riskData} />
-
-          {/* Additional information can be added here */}
-        </div>
-      )}
+    <div className="loan-risk-container">
+      <h1>Loan Risk Analysis for {name}</h1>
+      <div className="risk-score-section">
+        <h2>Your Risk Score: {riskScore}</h2>
+        <p>
+          A lower risk score indicates a lower risk of defaulting on the loan.
+          Scores are calculated based on several factors from your provided
+          information.
+        </p>
+      </div>
+      <div className="risk-chart-section">
+        <h3>Risk Factors Breakdown</h3>
+        <Pie data={pieData} />
+      </div>
+      <div className="risk-details-section">
+        <h3>Risk Analysis Details</h3>
+        <ul>
+          <li>
+            <strong>Age Group:</strong> {ageGroup}
+          </li>
+          <li>
+            <strong>Employment Status:</strong> {employmentStatus}
+          </li>
+          <li>
+            <strong>Income Bracket:</strong> {incomeBracket}
+          </li>
+          <li>
+            <strong>Savings Amount:</strong> ${savingsAmount}
+          </li>
+          <li>
+            <strong>Total Monthly Expenses:</strong> ${totalMonthlyExpenses}
+          </li>
+          <li>
+            <strong>Desired Loan Amount:</strong> ${desiredLoanAmount}
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
