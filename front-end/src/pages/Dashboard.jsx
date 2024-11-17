@@ -1,233 +1,248 @@
 // src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Spin, Alert, Table, Button } from 'antd';
-import { FileDoneOutlined, WarningOutlined, PercentageOutlined } from '@ant-design/icons';
+import {
+  FileDoneOutlined,
+  WarningOutlined,
+  PercentageOutlined,
+} from '@ant-design/icons';
 import SummaryCard from '../components/SummaryCard';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
-import './Dashboard.css'; // Updated CSS
-
-// Import Chart.js components
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import './Dashboard.css'; // Optional: For additional styling
 
 function Dashboard() {
+  // State variables for Summary Metrics
   const [totalClaims, setTotalClaims] = useState(null);
-  const [flaggedClaims, setFlaggedClaims] = useState([]);
-  const [fraudTrends, setFraudTrends] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [flaggedClaimsCount, setFlaggedClaimsCount] = useState(null);
+  const [fraudDetectionRate, setFraudDetectionRate] = useState(null);
 
-  // Fetch data from API endpoints
+  // State variables for Flagged Claims Table
+  const [flaggedClaims, setFlaggedClaims] = useState([]);
+  const [claimsLoading, setClaimsLoading] = useState(true);
+  const [claimsError, setClaimsError] = useState(false);
+
+  // State variables for Fraud Trends Chart
+  const [fraudTrends, setFraudTrends] = useState({});
+  const [trendsLoading, setTrendsLoading] = useState(true);
+  const [trendsError, setTrendsError] = useState(false);
+
+  // Combined loading and error states for summary metrics
+  const [metricsLoading, setMetricsLoading] = useState(true);
+  const [metricsError, setMetricsError] = useState(false);
+
+  // Fetch Summary Metrics
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMetrics = async () => {
       try {
-        setLoading(true);
-        setError(false);
+        setMetricsLoading(true);
+        setMetricsError(false);
 
         // Fetch total claims processed
-        const fraudTrendsResponse = await axios.get('/fraud_trends');
+        const fraudTrendsResponse = await axios.get('http://localhost:8000/fraud_trends');
         const total = fraudTrendsResponse.data.total_claims_processed;
 
-        // Fetch flagged claims
-        const flaggedClaimsResponse = await axios.get('/flagged_claims');
+        // Fetch flagged claims count
+        const flaggedClaimsResponse = await axios.get('http://localhost:8000/flagged_claims');
         const flagged = flaggedClaimsResponse.data.flagged_claims;
 
-        // Fetch detailed flagged claims data (assuming API provides detailed data)
-        const detailedFlaggedClaimsResponse = await axios.get('/flagged_claims/details');
-        const detailedFlagged = detailedFlaggedClaimsResponse.data.flagged_claims_details;
+        // Calculate Fraud Detection Rate
+        const rate = ((flagged / total) * 100).toFixed(2);
 
         setTotalClaims(total);
-        setFlaggedClaims(detailedFlagged);
-        setFraudTrends(fraudTrendsResponse.data);
+        setFlaggedClaimsCount(flagged);
+        setFraudDetectionRate(rate);
 
-        setLoading(false);
+        setMetricsLoading(false);
       } catch (err) {
-        console.error('Error fetching data:', err);
-        setError(true);
-        setLoading(false);
+        console.error('Error fetching summary metrics:', err);
+        setMetricsError(true);
+        setMetricsLoading(false);
       }
     };
 
-    fetchData();
+    fetchMetrics();
   }, []);
 
-  // Calculate Fraud Detection Rate
-  const fraudDetectionRate = totalClaims && fraudTrends.flagged_claims
-    ? ((fraudTrends.flagged_claims / totalClaims) * 100).toFixed(2)
-    : 'N/A';
+  // Fetch Flagged Claims Table Data
+  useEffect(() => {
+    const fetchFlaggedClaims = async () => {
+      try {
+        setClaimsLoading(true);
+        setClaimsError(false);
 
-  // Prepare data for Bar Chart
+        const response = await axios.get('http://localhost:8000/api/flagged_claims');
+        setFlaggedClaims(response.data);
+        setClaimsLoading(false);
+      } catch (err) {
+        console.error('Error fetching flagged claims:', err);
+        setClaimsError(true);
+        setClaimsLoading(false);
+      }
+    };
+
+    fetchFlaggedClaims();
+  }, []);
+
+  // Fetch Fraud Trends Data
+  useEffect(() => {
+    const fetchFraudTrends = async () => {
+      try {
+        setTrendsLoading(true);
+        setTrendsError(false);
+
+        const response = await axios.get('http://localhost:8000/api/fraud_trends');
+        setFraudTrends(response.data);
+        setTrendsLoading(false);
+      } catch (err) {
+        console.error('Error fetching fraud trends:', err);
+        setTrendsError(true);
+        setTrendsLoading(false);
+      }
+    };
+
+    fetchFraudTrends();
+  }, []);
+
+  // Data for Fraud Trends Bar Chart
   const chartData = {
-    labels: fraudTrends.labels || [], // e.g., ['January', 'February', ...]
+    labels: fraudTrends.labels || [],
     datasets: [
       {
         label: 'Fraud Detection Rate (%)',
-        data: fraudTrends.data || [], // e.g., [2.5, 3.0, ...]
-        backgroundColor: 'rgba(46, 66, 52, 0.6)', // Forest Green with opacity
-        borderColor: 'rgba(46, 66, 52, 1)',
+        data: fraudTrends.data || [],
+        backgroundColor: 'rgba(52, 152, 219, 0.6)', // Light Blue
+        borderColor: 'rgba(52, 152, 219, 1)',
         borderWidth: 1,
       },
     ],
   };
 
+  // Options for Fraud Trends Bar Chart
   const chartOptions = {
-    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+      },
+    },
     plugins: {
       legend: {
-        position: 'top',
-        labels: {
-          color: '#ffffff',
-        },
-      },
-      title: {
-        display: true,
-        text: 'Fraud Detection Trends',
-        color: '#ffffff',
+        display: false,
       },
     },
-    scales: {
-      x: {
-        ticks: {
-          color: '#ffffff',
-        },
-        grid: {
-          color: 'rgba(255, 255, 255, 0.2)',
-        },
-      },
-      y: {
-        ticks: {
-          color: '#ffffff',
-        },
-        grid: {
-          color: 'rgba(255, 255, 255, 0.2)',
-        },
-      },
-    },
+    maintainAspectRatio: false,
   };
 
-  // Define columns for Flagged Claims Table
+  // Columns for Flagged Claims Table
   const columns = [
     {
       title: 'Claim ID',
       dataIndex: 'id',
       key: 'id',
-      sorter: (a, b) => a.id.localeCompare(b.id),
-      render: text => <a href={`/claims/${text}`}>{text}</a>,
     },
     {
       title: 'Fraud Score',
       dataIndex: 'fraud_score',
       key: 'fraud_score',
-      sorter: (a, b) => a.fraud_score - b.fraud_score,
-      render: score => score.toFixed(2),
+      render: (score) => score.toFixed(2),
     },
     {
       title: 'Details',
       key: 'details',
-      render: (_, record) => (
-        <Button type="link" onClick={() => viewDetails(record.id)}>
-          View Details
-        </Button>
-      ),
+      render: (_, record) => <Button type="link">View Details</Button>,
     },
   ];
 
-  const viewDetails = (claimId) => {
-    // Implement navigation to claim details page or modal
-    // For example, using React Router's useNavigate:
-    // navigate(`/claims/${claimId}`);
-    console.log(`View details for Claim ID: ${claimId}`);
-  };
-
   return (
     <div className="dashboard-container">
-      {loading ? (
-        <div className="spinner-container">
-          <Spin tip="Loading..." size="large" />
-        </div>
-      ) : error ? (
+      {/* Summary Metrics */}
+      {metricsLoading ? (
+        <Spin tip="Loading Summary Metrics..." size="large" />
+      ) : metricsError ? (
         <Alert
           message="Error"
-          description="There was an error fetching the dashboard data."
+          description="There was an error fetching the summary metrics."
           type="error"
           showIcon
         />
       ) : (
-        <>
-          {/* Summary Metrics Cards */}
-          <Row gutter={[16, 16]} className="summary-cards-row">
-            <Col xs={24} sm={12} md={8}>
-              <SummaryCard
-                title="Total Claims Processed"
-                value={totalClaims}
-                icon={<FileDoneOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-                color="#1890ff" // Ant Design blue
-              />
-            </Col>
-            <Col xs={24} sm={12} md={8}>
-              <SummaryCard
-                title="Flagged Claims"
-                value={fraudTrends.flagged_claims || 0}
-                icon={<WarningOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-                color="#f5222d" // Ant Design red
-              />
-            </Col>
-            <Col xs={24} sm={24} md={8}>
-              <SummaryCard
-                title="Fraud Detection Rate"
-                value={`${fraudDetectionRate}%`}
-                icon={<PercentageOutlined style={{ fontSize: '24px', color: '#fff' }} />}
-                color="#52c41a" // Ant Design green
-                trend={{
-                  value: '+2.5%',
-                  precision: 1,
-                  color: '#52c41a', // Green for positive trend
-                  prefix: 'up', // 'up' for increase, 'down' for decrease
-                  suffix: '',
-                }}
-              />
-            </Col>
-          </Row>
-
-          {/* Flagged Claims Table */}
-          <div className="table-container">
-            <h2 className="section-title">Flagged Claims</h2>
-            <Table
-              dataSource={flaggedClaims}
-              columns={columns}
-              rowKey="id"
-              pagination={{ pageSize: 10 }}
-              bordered
-              scroll={{ x: '100%' }}
-              className="flagged-claims-table"
+        <Row gutter={[16, 16]} className="summary-metrics-row">
+          <Col xs={24} sm={12} md={8}>
+            <SummaryCard
+              title="Total Claims Processed"
+              value={totalClaims}
+              icon={<FileDoneOutlined style={{ fontSize: '24px', color: '#fff' }} />}
+              color="#1890ff" // Ant Design blue
             />
-          </div>
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <SummaryCard
+              title="Flagged Claims"
+              value={flaggedClaimsCount}
+              icon={<WarningOutlined style={{ fontSize: '24px', color: '#fff' }} />}
+              color="#f5222d" // Ant Design red
+            />
+          </Col>
+          <Col xs={24} sm={24} md={8}>
+            <SummaryCard
+              title="Fraud Detection Rate"
+              value={`${fraudDetectionRate}%`}
+              icon={<PercentageOutlined style={{ fontSize: '24px', color: '#fff' }} />}
+              color="#52c41a" // Ant Design green
+              trend={{
+                value: '+2.5%',
+                precision: 1,
+                color: '#52c41a', // Green for positive trend
+                prefix: 'up', // 'up' for increase, 'down' for decrease
+                suffix: '',
+              }}
+            />
+          </Col>
+        </Row>
+      )}
 
-          {/* Fraud Trends Bar Chart */}
+      {/* Flagged Claims Table */}
+      <div className="flagged-claims-section">
+        <h2>Flagged Claims</h2>
+        {claimsLoading ? (
+          <Spin tip="Loading Flagged Claims..." />
+        ) : claimsError ? (
+          <Alert
+            message="Error"
+            description="There was an error fetching the flagged claims."
+            type="error"
+            showIcon
+          />
+        ) : (
+          <Table
+            dataSource={flaggedClaims}
+            columns={columns}
+            rowKey="id"
+            pagination={{ pageSize: 10 }}
+            bordered
+          />
+        )}
+      </div>
+
+      {/* Fraud Trends Bar Chart */}
+      <div className="fraud-trends-section">
+        <h2>Fraud Trends</h2>
+        {trendsLoading ? (
+          <Spin tip="Loading Fraud Trends..." />
+        ) : trendsError ? (
+          <Alert
+            message="Error"
+            description="There was an error fetching the fraud trends data."
+            type="error"
+            showIcon
+          />
+        ) : (
           <div className="chart-container">
-            <h2 className="section-title">Fraud Trends</h2>
             <Bar data={chartData} options={chartOptions} />
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 }
