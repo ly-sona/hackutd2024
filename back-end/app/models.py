@@ -10,8 +10,8 @@ class LoanApplicationRecord(Base):
     __tablename__ = 'loan_applications'
     
     id = Column(Integer, primary_key=True, index=True)
-    applicant_id = Column(String, unique=True, index=True)
-    approval_probability = Column(Float)
-    default_risk = Column(Float)
+    applicant_id = Column(String, unique=True, index=True, nullable=False)
+    approval_probability = Column(Float, nullable=False)
+    default_risk = Column(Float, nullable=False)
     documents_ipfs_hash = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
