@@ -2,8 +2,7 @@
 
 ## Before Running
 
-1. create .env file with following:
-`DATABASE_URL=postgresql://postgres:gTrYsTeJBSgbuXNRrqufolZYptsvvjaW@autorack.proxy.rlwy.net:58378/railway`
+1. create .env file with following: (you will need a database URL as well...)
 `MODEL_PATH=../model/lightgbm_model.pkl`
 `LABEL_ENCODERS_PATH=../model/label_encoders.pkl`
 2. change directories into back-end
