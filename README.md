@@ -1,6 +1,6 @@
 # hackutd2024
 
-[![DEMO VIDEO](https://img.youtube.com/vi/GZDfWB_H7oc&ab_channel=ly-sona/maxresdefault.jpg)](https://www.youtube.com/watch?v=GZDfWB_H7oc&ab_channel=ly-sona)
+[![DEMO VIDEO](https://ibb.co/hBGjcQC)](https://www.youtube.com/watch?v=GZDfWB_H7oc&ab_channel=ly-sona)
 
 ## Before Running
 
