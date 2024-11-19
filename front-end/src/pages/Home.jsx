@@ -9,7 +9,7 @@ export default function Home() {
   className="text-center text-[5rem] font-normal flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-400 text-transparent bg-clip-text drop-shadow-[4px_4px_4px_rgba(0,0,0,0.7)]"
   style={{ marginTop: "-1000px" }}
 >
-  Everyone Deserves the Truth
+  Smart Loans, Smart Choices
 </h1>
 
         </div>

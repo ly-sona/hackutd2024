@@ -51,8 +51,8 @@ function App() {
 
   const calculateGradient = () => {
     const { x, y } = cursorPos;
-    const lightPurple = 'rgba(123, 104, 238, 0.2)';
-    const darkPurple = 'rgba(75, 0, 130, 0.8)';
+    const lightPurple = 'rgba(46, 41, 77, 1)';
+    const darkPurple = 'rgba(38, 34, 64, 1)';
     return `radial-gradient(circle at ${x}% ${y}%, ${lightPurple} 0%, ${darkPurple} 100%)`;
   };
 
@@ -80,7 +80,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/CusInfo" element={<CusInfo />} />
-              <Route path="/default" element={<Default />} />
               <Route path="/loan-risk" element={<LoanRisk />} />
             </Routes>
           </div>
