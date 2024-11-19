@@ -1,5 +1,7 @@
 # hackutd2024
 
+[![DEMO VIDEO](https://img.youtube.com/vi/GZDfWB_H7oc&ab_channel=ly-sona/maxresdefault.jpg)](https://www.youtube.com/watch?v=GZDfWB_H7oc&ab_channel=ly-sona)
+
 ## Before Running
 
 1. create .env file with following: (you will need a database URL as well...)
